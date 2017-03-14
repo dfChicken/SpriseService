@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         version="2.5"
+         xmlns="http://java.sun.com/xml/ns/javaee"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+    <display-name>ANDRService</display-name>
+
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
+    
+    <servlet>
+        <servlet-name>FacebookController</servlet-name>
+        <servlet-class>controller.FacebookController</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>FacebookController</servlet-name>
+        <url-pattern>/fbhome</url-pattern>
+    </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>jersey-filter</servlet-name>
+        <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
+        <init-param>
+            <param-name>javax.ws.rs.Application</param-name>
+            <param-value>service.ApplicationConfig</param-value>
+        </init-param>
+
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>jersey-filter</servlet-name>
+        <url-pattern>/resources/*</url-pattern>
+    </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>UploadServlet</servlet-name>
+        <jsp-file>/multipleup.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UploadServlet</servlet-name>
+        <url-pattern>/upload</url-pattern>   
+    </servlet-mapping>
+        
+    <servlet>
+        <servlet-name>PhotoServlet</servlet-name>
+        <jsp-file>/photo.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>PhotoServlet</servlet-name>
+        <url-pattern>/photos</url-pattern>   
+    </servlet-mapping>
+        
+    <session-config>
+        <session-timeout>
+            30
+        </session-timeout>
+    </session-config>
+    
+</web-app>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<appengine-web-app xmlns="http://appengine.google.com/ns/1.0"
+                   xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+                   xsi:schemaLocation='http://kenai.com/projects/nbappengine/downloads/download/schema/appengine-web.xsd appengine-web.xsd'>
+    <application>andrservice-160916</application>
+    <version>1</version>
+    <!--    <ssl-enabled>false</ssl-enabled>
+    <sessions-enabled>true</sessions-enabled>
+    -->
+    <use-google-connector-j>true</use-google-connector-j>
+    <system-properties>
+        <property name="ae-cloudsql.cloudsql-database-url" value="jdbc:google:mysql://andrservice-160916:asia-east1:andrservice8317dbinstance/socialapp?user=root&amp;password=1234" />
+    </system-properties>
+    <threadsafe>false</threadsafe>
+</appengine-web-app>
