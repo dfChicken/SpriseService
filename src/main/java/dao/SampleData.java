@@ -87,9 +87,9 @@ public class SampleData {
     }
 
     public static void initComment() {
-        long time = System.currentTimeMillis();
-        java.sql.Date date = new java.sql.Date(time);
-        java.sql.Timestamp timestmp = new java.sql.Timestamp(time);
+//        long time = System.currentTimeMillis();
+//        java.sql.Date date = new java.sql.Date(time);
+//        java.sql.Timestamp timestmp = new java.sql.Timestamp(time);
 
 //        putComment(1, 3, "Hay lam=]]", timestmp, timestmp);
 //        putComment(4, 3, "bốc phét!", timestmp, timestmp);
