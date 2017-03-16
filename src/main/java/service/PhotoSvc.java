@@ -58,6 +58,19 @@ public class PhotoSvc {
     }
 
     @GET
+    @Path("/notuser")
+    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    @Consumes(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    public String getAllPhotosNotUser(@QueryParam("uid") int uid) {
+        String response = "";
+        ArrayList<Photo> photos = PhotoData.getAllPhotosExceptUser(uid);
+        if (!photos.isEmpty()) {
+            response = new Gson().toJson(photos);
+        }
+        return response;
+    }
+
+    @GET
     @Path("/photo")
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
     @Consumes(MediaType.APPLICATION_JSON + ";charset=utf-8")
