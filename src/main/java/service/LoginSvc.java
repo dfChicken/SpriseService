@@ -38,7 +38,7 @@ public class LoginSvc {
         if (checkCredentials(email, pwd)) {
             String token = issueToken(email, pwd);
             int uid = UserData.getUserId(email, pwd);
-            response = Utility.loginSuccess(true, uid, token);
+            response = Utility.loginSuccess(true, uid, email, token);
         } else {
             response = Utility.loginFailed(false, "Incorrect Email or Password");
         }

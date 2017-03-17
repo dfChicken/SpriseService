@@ -410,7 +410,7 @@ public class UserData {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        String query = "select c.user_id, u.username, u.profile_photo_id, photos.image_url as 'profile_photo_url' from users u inner join\n"
+        String query = "select c.user_id, u.username, u.email , u.profile_photo_id, photos.image_url as 'profile_photo_url' from users u inner join\n"
                 + "(select sender_id as 'user_id' from firebase_chatted where receiver_id = " + currentId + " \n"
                 + "union\n"
                 + "select receiver_id as 'user_id' from firebase_chatted where sender_id = " + currentId + "\n"
@@ -426,6 +426,7 @@ public class UserData {
                 u.setUid(rs.getInt("user_id"));
                 u.setUsername(rs.getString("username"));
                 u.setProfile_photo_url(rs.getString("profile_photo_url"));
+                u.setEmail(rs.getString("email"));
                 chattedUsers.add(u);
             }
         } catch (SQLException ex) {

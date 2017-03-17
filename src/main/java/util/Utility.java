@@ -87,12 +87,13 @@ public class Utility {
         return obj.toString();
     }
 
-    public static String loginSuccess(boolean status, int uid, String token) {
+    public static String loginSuccess(boolean status, int uid, String email, String token) {
         JSONObject obj = new JSONObject();
         try {
             obj.put("tag", LOGIN);
             obj.put("status", status);
             obj.put("uid", uid);
+            obj.put("email", email);
             obj.put("token", token);
         } catch (JSONException e) {
             // TODO Auto-generated catch block
