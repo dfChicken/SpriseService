@@ -115,6 +115,22 @@ public class InteractionSvc {
         return response;
     }
 
+    @GET
+    @Path("/user/getchatted")
+    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    @Consumes(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    public String getChattedUsers(@QueryParam("uid") int uid) {
+        String response = "";
+        Gson gson = new GsonBuilder().serializeNulls().create();
+        //allow null value
+        ArrayList<User> users = UserData.getChattedFirebaseList(uid);
+        if (!users.isEmpty()) {
+//            response = new Gson().toJson(photos);
+            response = gson.toJson(users);
+        }
+        return response;
+    }
+
     @PUT
     @Path("/user/putcommentlike")
     @Produces(MediaType.APPLICATION_JSON)

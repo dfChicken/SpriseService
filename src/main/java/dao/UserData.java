@@ -15,6 +15,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -396,4 +397,55 @@ public class UserData {
         }
     }
 
+    public static ArrayList<User> getChattedFirebaseList(int currentId) {
+        ArrayList<User> chattedUsers = new ArrayList<>();
+
+        Connection dbConn = null;
+
+        Statement st = null;
+        ResultSet rs = null;
+
+        try {
+            dbConn = DBConnection.createConnection();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        String query = "select c.user_id, u.username, u.profile_photo_id, photos.image_url as 'profile_photo_url' from users u inner join\n"
+                + "(select sender_id as 'user_id' from firebase_chatted where receiver_id = " + currentId + " \n"
+                + "union\n"
+                + "select receiver_id as 'user_id' from firebase_chatted where sender_id = " + currentId + "\n"
+                + "group by 'user_id') as c \n"
+                + "on u.user_id = c.user_id\n"
+                + "left join photos on u.profile_photo_id = photos.photo_id";
+
+        try {
+            st = dbConn.createStatement();
+            rs = st.executeQuery(query);
+            while (rs.next()) {
+                User u = new User();
+                u.setUid(rs.getInt("user_id"));
+                u.setUsername(rs.getString("username"));
+                u.setProfile_photo_url(rs.getString("profile_photo_url"));
+                chattedUsers.add(u);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (st != null) {
+                    st.close();
+                }
+                if (dbConn != null) {
+                    dbConn.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        return chattedUsers;
+    }
 }

@@ -21,6 +21,7 @@ public class User {
     private String lname;
     private String des;
     private int profile_photo_id;
+    private String profile_photo_url;
     private int gender;
     private int user_status;
     private int user_activated;
@@ -158,6 +159,14 @@ public class User {
         this.updated = updated;
     }
 
+    public String getProfile_photo_url() {
+        return profile_photo_url;
+    }
+
+    public void setProfile_photo_url(String profile_photo_url) {
+        this.profile_photo_url = profile_photo_url;
+    }
+    
     @Override
     public String toString() {
         return "User{" + "uid=" + uid + ", username=" + username + ", email=" + email + ", password=" + password + ", fname=" + fname + ", lname=" + lname + ", des=" + des + ", profile_photo_id=" + profile_photo_id + ", gender=" + gender + ", user_status=" + user_status + ", user_activated=" + user_activated + ", created=" + created + ", updated=" + updated + '}';
