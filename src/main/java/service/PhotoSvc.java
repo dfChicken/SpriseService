@@ -113,8 +113,9 @@ public class PhotoSvc {
         if ("null".equals(down_url)) {
             down_url = null;
         }
-        
-        result = PhotoData.insertPhoto(uid, caption, lat, longt, size, url, down_url, status, isAvatar, create_time, create_time);
+        String decodedURL = Utils.decodeURL(url);
+
+        result = PhotoData.insertPhoto(uid, caption, lat, longt, size, decodedURL, down_url, status, isAvatar, create_time, create_time);
         if (result) {
             return Response.status(Response.Status.CREATED).build();
         } else {
