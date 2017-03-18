@@ -7,18 +7,22 @@ package service;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import dao.InteractionData;
 import dao.PhotoData;
 import entity.Photo;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import javax.annotation.security.RolesAllowed;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
-import util.Utility;
+import javax.ws.rs.core.Response;
+import util.Utils;
 
 /**
  *
@@ -95,7 +99,26 @@ public class PhotoSvc {
 //        } else {
 //            response = Utility.deleteJsonResponse(pid, Utility.PHOTO, false);
 //        }
-        return Utility.entityJsonResponse(Utility.DELETE, pid, Utility.PHOTO, result);
+        return Utils.entityJsonResponse(Utils.DELETE, pid, Utils.PHOTO, result);
     }
 
+    @PUT
+    @Path("/photo/upload")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response uploadNewPhotoFeed(@QueryParam("uid") int uid, @QueryParam("caption") String caption, @QueryParam("lat") float lat, @QueryParam("longt") float longt,
+            @QueryParam("size") long size, @QueryParam("url") String url, @QueryParam("down_url") String down_url, @QueryParam("status") int status,
+            @QueryParam("isAvatar") int isAvatar, @QueryParam("created") long created) {
+        boolean result = false;
+        Timestamp create_time = new Timestamp(created);
+        if ("null".equals(down_url)) {
+            down_url = null;
+        }
+        
+        result = PhotoData.insertPhoto(uid, caption, lat, longt, size, url, down_url, status, isAvatar, create_time, create_time);
+        if (result) {
+            return Response.status(Response.Status.CREATED).build();
+        } else {
+            return Response.status(Response.Status.CONFLICT).build();
+        }
+    }
 }

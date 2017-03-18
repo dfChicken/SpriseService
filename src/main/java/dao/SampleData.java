@@ -31,7 +31,6 @@ public class SampleData {
 //        initComment();
 //        System.out.println(checkLogin("admin@gmail.com", "123"));
         long time = System.currentTimeMillis();
-        java.sql.Date date = new java.sql.Date(time);
         java.sql.Timestamp timestmp = new java.sql.Timestamp(time);
         insertPhoto(1, null, 0, 0, 36864, "https://firebasestorage.googleapis.com/v0/b/socialapp-cc534.appspot.com/o/images%2F13620247_954243748019435_4000797586209327288_n.jpg?alt=media&token=39140506-744d-41e2-965e-0839e2e845e5", null, 1, 1, timestmp, timestmp);
     }
@@ -39,7 +38,6 @@ public class SampleData {
     //initialize user data
     public static void initUser() throws Exception {
         long time = System.currentTimeMillis();
-        java.sql.Date date = new java.sql.Date(time);
         java.sql.Timestamp timestmp = new java.sql.Timestamp(time);
         registerUser("coinCard", "promo.chicken@gmail.com", "123", "Card", "Coin", "Hay lam!", 0, 1, 1, timestmp, timestmp);
         registerUser("dfChicken", "hainam.4795@gmail.com", "123", "Nam", "Nguyen", "Hay lam!", 0, 1, 1, timestmp, timestmp);
@@ -50,7 +48,6 @@ public class SampleData {
 
     public static void initPhoto() throws SQLException {
         long time = System.currentTimeMillis();
-        java.sql.Date date = new java.sql.Date(time);
         java.sql.Timestamp timestmp = new java.sql.Timestamp(time);
         insertPhoto(1, "I'm sorry...", 0, 0, 57344, "http://instagram.fhan1-1.fna.fbcdn.net/t51.2885-15/e35/14677346_369695710088347_4233693574568345600_n.jpg", null, 1, 0, timestmp, timestmp);
         insertPhoto(1, "First go to market with my love", 0, 0, 53248, "https://scontent.fhan1-1.fna.fbcdn.net/v/t1.0-9/15541441_1095055387271603_7045384722623337265_n.jpg?oh=918894b1eae1307f581a5a7a7585c84d&oe=5934349E", null, 1, 0, timestmp, timestmp);
@@ -88,7 +85,6 @@ public class SampleData {
 
     public static void initComment() {
 //        long time = System.currentTimeMillis();
-//        java.sql.Date date = new java.sql.Date(time);
 //        java.sql.Timestamp timestmp = new java.sql.Timestamp(time);
 
 //        putComment(1, 3, "Hay lam=]]", timestmp, timestmp);

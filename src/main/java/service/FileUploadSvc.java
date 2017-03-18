@@ -29,7 +29,7 @@ import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.FilenameUtils;
-import util.Utility;
+import util.Utils;
 
 @Path("/upload")
 public class FileUploadSvc {
@@ -92,7 +92,7 @@ public class FileUploadSvc {
                     }
                 }
             } catch (Exception e) {
-                responseStatus = Utility.constructFailed(false, e.getLocalizedMessage());
+                responseStatus = Utils.constructFailed(false, e.getLocalizedMessage());
             }
         }
 

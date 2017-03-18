@@ -8,7 +8,7 @@ package service;
 import dao.DBConnection;
 import dao.UserData;
 import javax.annotation.security.PermitAll;
-import util.Utility;
+import util.Utils;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -38,9 +38,9 @@ public class LoginSvc {
         if (checkCredentials(email, pwd)) {
             String token = issueToken(email, pwd);
             int uid = UserData.getUserId(email, pwd);
-            response = Utility.loginSuccess(true, uid, email, token);
+            response = Utils.loginSuccess(true, uid, email, token);
         } else {
-            response = Utility.loginFailed(false, "Incorrect Email or Password");
+            response = Utils.loginFailed(false, "Incorrect Email or Password");
         }
         return response;
     }
@@ -55,7 +55,7 @@ public class LoginSvc {
     private boolean checkCredentials(String email, String pwd) {
         System.out.println("Inside checkCredentials");
         boolean result = false;
-        if (Utility.isNotNull(email) && Utility.isNotNull(pwd)) {
+        if (Utils.isNotNull(email) && Utils.isNotNull(pwd)) {
             try {
                 result = UserData.checkLogin(email, pwd);
                 //System.out.println("Inside checkCredentials try "+result);

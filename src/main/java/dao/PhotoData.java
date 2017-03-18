@@ -23,7 +23,8 @@ import java.util.logging.Logger;
  */
 public class PhotoData {
 
-    public static boolean insertPhoto(int uid, String caption, float lat, float longt, int size, String url, String down_url, int status, int isAvatar, Timestamp created, Timestamp updated) throws SQLException {
+    public static boolean insertPhoto(int uid, String caption, float lat, float longt,
+            long size, String url, String down_url, int status, int isAvatar, Timestamp created, Timestamp updated) {
         boolean insertStatus = false;
         Connection dbConn = null;
         try {
@@ -42,7 +43,7 @@ public class PhotoData {
             preparedStatement.setString(2, caption);
             preparedStatement.setFloat(3, lat);
             preparedStatement.setFloat(4, longt);
-            preparedStatement.setInt(5, size);
+            preparedStatement.setLong(5, size);
             preparedStatement.setString(6, url);
             preparedStatement.setString(7, down_url);
             preparedStatement.setInt(8, status);
@@ -54,15 +55,11 @@ public class PhotoData {
             if (records > 0) {
                 insertStatus = true;
             }
+            if (dbConn != null) {
+                dbConn.close();
+            }
         } catch (SQLException ex) {
-            if (dbConn != null) {
-                dbConn.close();
-            }
-            throw ex;
-        } finally {
-            if (dbConn != null) {
-                dbConn.close();
-            }
+            ex.printStackTrace();
         }
         return insertStatus;
     }
@@ -160,7 +157,7 @@ public class PhotoData {
                 p.setCaption(rs.getString("caption"));
                 p.setLat(rs.getFloat("latitude"));
                 p.setLongt(rs.getFloat("longtitude"));
-                p.setSize(rs.getInt("image_size"));
+                p.setSize(rs.getLong("image_size"));
                 p.setUrl(rs.getString("image_url"));
                 p.setDownsized_url(rs.getString("downsized_image_url"));
                 p.setStatus(rs.getInt("image_status"));
@@ -300,7 +297,7 @@ public class PhotoData {
                 p.setCaption(rs.getString("caption"));
                 p.setLat(rs.getFloat("latitude"));
                 p.setLongt(rs.getFloat("longtitude"));
-                p.setSize(rs.getInt("image_size"));
+                p.setSize(rs.getLong("image_size"));
                 p.setUrl(rs.getString("image_url"));
                 p.setDownsized_url(rs.getString("downsized_image_url"));
                 p.setStatus(rs.getInt("image_status"));
@@ -358,7 +355,7 @@ public class PhotoData {
                 p.setCaption(rs.getString("caption"));
                 p.setLat(rs.getFloat("latitude"));
                 p.setLongt(rs.getFloat("longtitude"));
-                p.setSize(rs.getInt("image_size"));
+                p.setSize(rs.getLong("image_size"));
                 p.setUrl(rs.getString("image_url"));
                 p.setDownsized_url(rs.getString("downsized_image_url"));
                 p.setStatus(rs.getInt("image_status"));
@@ -416,7 +413,7 @@ public class PhotoData {
                 p.setCaption(rs.getString("caption"));
                 p.setLat(rs.getFloat("latitude"));
                 p.setLongt(rs.getFloat("longtitude"));
-                p.setSize(rs.getInt("image_size"));
+                p.setSize(rs.getLong("image_size"));
                 p.setUrl(rs.getString("image_url"));
                 p.setDownsized_url(rs.getString("downsized_image_url"));
                 p.setStatus(rs.getInt("image_status"));

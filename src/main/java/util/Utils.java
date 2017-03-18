@@ -5,6 +5,7 @@
  */
 package util;
 
+import java.io.UnsupportedEncodingException;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 
@@ -12,7 +13,7 @@ import org.codehaus.jettison.json.JSONObject;
  *
  * @author dfChicken
  */
-public class Utility {
+public class Utils {
 
     public static String LOGIN = "login";
     public static String PHOTO = "photo";
@@ -127,4 +128,23 @@ public class Utility {
         return obj.toString();
     }
 
+    public static String decodeURL(String imageUrl) {
+        try {
+            imageUrl = java.net.URLDecoder.decode(imageUrl, "ISO-8859-1");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+        return imageUrl;
+    }
+
+    public static String encodeURL(String imageUrl) {
+        try {
+            imageUrl = java.net.URLEncoder.encode(imageUrl, "ISO-8859-1");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+        return imageUrl;
+    }
 }

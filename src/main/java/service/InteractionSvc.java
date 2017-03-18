@@ -29,7 +29,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.glassfish.jersey.internal.util.Base64;
-import util.Utility;
+import util.Utils;
 
 /**
  *
@@ -73,9 +73,9 @@ public class InteractionSvc {
     public Response addComment(@QueryParam("uid") int uid, @QueryParam("pid") int pid, @QueryParam("content") String content, @QueryParam("time_created") long created) {
         boolean result = false;
         Timestamp _created = new Timestamp(created);
-        Timestamp _updated = new Timestamp(created);
+//        Timestamp _updated = new Timestamp(created);
 
-        result = InteractionData.putComment(uid, pid, content, _created, _updated);
+        result = InteractionData.putComment(uid, pid, content, _created, _created);
         if (result) {
             return Response.status(Response.Status.CREATED).build();
         } else {

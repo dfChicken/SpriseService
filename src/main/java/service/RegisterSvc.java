@@ -7,7 +7,7 @@ package service;
 
 import dao.DBConnection;
 import dao.UserData;
-import util.Utility;
+import util.Utils;
 import java.sql.SQLException;
 import javax.annotation.security.PermitAll;
 
@@ -39,13 +39,13 @@ public class RegisterSvc {
         //System.out.println("Inside doLogin "+uname+"  "+pwd);
         int retCode = registerUser(name, uname, pwd);
         if (retCode == 0) {
-            response = Utility.constructJSON("register", true);
+            response = Utils.constructJSON("register", true);
         } else if (retCode == 1) {
-            response = Utility.constructJSON("register", false, "You are already registered");
+            response = Utils.constructJSON("register", false, "You are already registered");
         } else if (retCode == 2) {
-            response = Utility.constructJSON("register", false, "Special Characters are not allowed in Username and Password");
+            response = Utils.constructJSON("register", false, "Special Characters are not allowed in Username and Password");
         } else if (retCode == 3) {
-            response = Utility.constructJSON("register", false, "Error occured");
+            response = Utils.constructJSON("register", false, "Error occured");
         }
         return response;
 
@@ -54,7 +54,7 @@ public class RegisterSvc {
     private int registerUser(String name, String uname, String pwd) {
         System.out.println("Inside checkCredentials");
         int result = 3;
-        if (Utility.isNotNull(uname) && Utility.isNotNull(pwd)) {
+        if (Utils.isNotNull(uname) && Utils.isNotNull(pwd)) {
             try {
                 if (UserData.insertUser(name, uname, pwd)) {
                     System.out.println("RegisterUSer if");

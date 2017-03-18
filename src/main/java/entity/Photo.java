@@ -21,7 +21,7 @@ public class Photo {
     private String caption;
     private float lat;
     private float longt;
-    private int size;
+    private long size;
     private String url;
     private String downsized_url;
     private int status;
@@ -75,7 +75,7 @@ public class Photo {
         return size;
     }
 
-    public void setSize(int size) {
+    public void setSize(long size) {
         this.size = size;
     }
 

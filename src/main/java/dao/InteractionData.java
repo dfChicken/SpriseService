@@ -157,6 +157,7 @@ public class InteractionData {
             preparedStatement.setTimestamp(5, updated);
 
             int records = preparedStatement.executeUpdate();
+            
             if (records > 0) {
                 insertStatus = true;
             }
