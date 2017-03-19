@@ -17,8 +17,7 @@
         <password>1234</password>
         <database>socialapp</database>
     </properties>
-     
-
+  
     <dependencies>
         
         <dependency>
@@ -95,7 +94,7 @@
             <artifactId>commons-io</artifactId>
             <version>2.4</version>
         </dependency>
-        
+
     </dependencies>
 
     <build>

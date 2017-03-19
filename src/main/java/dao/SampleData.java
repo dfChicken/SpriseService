@@ -14,6 +14,7 @@ import static dao.PhotoData.getTimelinePhotos;
 import entity.Photo;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import util.Utils;
 
 /**
  *
@@ -30,9 +31,9 @@ public class SampleData {
 //        }
 //        initComment();
 //        System.out.println(checkLogin("admin@gmail.com", "123"));
-        long time = System.currentTimeMillis();
-        java.sql.Timestamp timestmp = new java.sql.Timestamp(time);
-        insertPhoto(1, null, 0, 0, 36864, "https://firebasestorage.googleapis.com/v0/b/socialapp-cc534.appspot.com/o/images%2F13620247_954243748019435_4000797586209327288_n.jpg?alt=media&token=39140506-744d-41e2-965e-0839e2e845e5", null, 1, 1, timestmp, timestmp);
+        String urlencoded = "https%3A%2F%2Ffirebasestorage.googleapis.com%2Fv0%2Fb%2Fsocialapp-cc534.appspot.com%2Fo%2Fuploads%252F1489825289272.png%3Falt%3Dmedia%26token%3D19b3b02a-5bb8-47e6-8df9-969d4aa1ce26";
+
+        System.out.println(Utils.decodeURL(urlencoded));
     }
 
     //initialize user data
@@ -92,5 +93,8 @@ public class SampleData {
 //        putComment(3, 3, "coin", timestmp, timestmp);
 //        putComment(2, 3, "card", timestmp, timestmp);
 //        putComment(3, 4, "Hay lam=))", timestmp, timestmp);
+        String urlencoded = "https%3A%2F%2Ffirebasestorage.googleapis.com%2Fv0%2Fb%2Fsocialapp-cc534.appspot.com%2Fo%2Fuploads%252F1489825289272.png%3Falt%3Dmedia%26token%3D19b3b02a-5bb8-47e6-8df9-969d4aa1ce26";
+
+
     }
 }

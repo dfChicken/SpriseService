@@ -108,14 +108,17 @@ public class PhotoSvc {
     public Response uploadNewPhotoFeed(@QueryParam("uid") int uid, @QueryParam("caption") String caption, @QueryParam("lat") float lat, @QueryParam("longt") float longt,
             @QueryParam("size") long size, @QueryParam("url") String url, @QueryParam("down_url") String down_url, @QueryParam("status") int status,
             @QueryParam("isAvatar") int isAvatar, @QueryParam("created") long created) {
+        
         boolean result = false;
+        
         Timestamp create_time = new Timestamp(created);
         if ("null".equals(down_url)) {
             down_url = null;
         }
-        String decodedURL = Utils.decodeURL(url);
 
-        result = PhotoData.insertPhoto(uid, caption, lat, longt, size, decodedURL, down_url, status, isAvatar, create_time, create_time);
+        String decodedCaption = Utils.decodeUTF8(caption);
+
+        result = PhotoData.insertPhoto(uid, decodedCaption, lat, longt, size, url, down_url, status, isAvatar, create_time, create_time);
         if (result) {
             return Response.status(Response.Status.CREATED).build();
         } else {

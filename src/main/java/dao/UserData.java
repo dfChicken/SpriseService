@@ -414,7 +414,7 @@ public class UserData {
                 + "(select sender_id as 'user_id' from firebase_chatted where receiver_id = " + currentId + " \n"
                 + "union\n"
                 + "select receiver_id as 'user_id' from firebase_chatted where sender_id = " + currentId + "\n"
-                + "group by 'user_id') as c \n"
+                + ") as c \n"
                 + "on u.user_id = c.user_id\n"
                 + "left join photos on u.profile_photo_id = photos.photo_id";
 

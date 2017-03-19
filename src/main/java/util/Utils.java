@@ -8,6 +8,7 @@ package util;
 import java.io.UnsupportedEncodingException;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
+import org.glassfish.jersey.internal.util.Base64;
 
 /**
  *
@@ -146,5 +147,34 @@ public class Utils {
         }
 
         return imageUrl;
+    }
+
+    public static String encodeUTF8(String text) {
+        try {
+            text = java.net.URLEncoder.encode(text, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return text;
+    }
+
+    public static String decodeUTF8(String text) {
+        try {
+            text = java.net.URLDecoder.decode(text, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        return text;
+    }
+
+    public static String encodeBASE64(String text) {
+
+        String encoded = Base64.encodeAsString(text);
+        return encoded;
+    }
+
+    public static String decodeBASE64(String text) {
+        String encoded = Base64.decodeAsString(text);
+        return encoded;
     }
 }
