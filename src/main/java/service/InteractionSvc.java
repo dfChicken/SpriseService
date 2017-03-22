@@ -43,9 +43,10 @@ public class InteractionSvc {
     @Path("/photo/like")
     @Produces(MediaType.APPLICATION_JSON)
 //    @Consumes(MediaType.APPLICATION_JSON)
-    public Response putPhotoLike(@QueryParam("uid") int uid, @QueryParam("pid") int pid) {
+    public Response putPhotoLike(@QueryParam("uid") int uid, @QueryParam("pid") int pid, @QueryParam("date_created") long created) {
         boolean result = false;
-        result = InteractionData.putPhotoLike(uid, pid);
+        Timestamp date_created = new Timestamp(created);
+        result = InteractionData.putPhotoLike(uid, pid, date_created);
         if (result) {
             return Response.status(Response.Status.CREATED).build();
         } else {
@@ -115,7 +116,6 @@ public class InteractionSvc {
         }
         return response;
     }
-
 
     @PUT
     @Path("/user/putcommentlike")

@@ -44,9 +44,8 @@ public class SampleData {
 //        initComment();
 //        System.out.println(checkLogin("admin@gmail.com", "123"));
 
-
         MessageData.pushMessageNotification("hay", 2, "coinCard", 1, "cc");
-        
+
 //        FcmNotificationBuilder fcmNB = new FcmNotificationBuilder();
 ////        fcmNB.pushNotificationForMultiIds(tokenList);
 //        for(int i=0;i<tokenList.size();i++){
@@ -88,18 +87,20 @@ public class SampleData {
     }
 
     public static void initLike() throws SQLException {
-        putPhotoLike(1, 3);
-        putPhotoLike(1, 5);
-        putPhotoLike(1, 6);
-        putPhotoLike(3, 1);
-        putPhotoLike(3, 2);
-        putPhotoLike(3, 4);
-        putPhotoLike(4, 1);
-        putPhotoLike(4, 2);
-        putPhotoLike(4, 3);
-        putPhotoLike(4, 4);
-        putPhotoLike(4, 6);
-        putPhotoLike(2, 1);
+        long time = System.currentTimeMillis();
+        java.sql.Timestamp timestmp = new java.sql.Timestamp(time);
+        putPhotoLike(1, 3, timestmp);
+        putPhotoLike(1, 5, timestmp);
+        putPhotoLike(1, 6, timestmp);
+        putPhotoLike(3, 1, timestmp);
+        putPhotoLike(3, 2, timestmp);
+        putPhotoLike(3, 4, timestmp);
+        putPhotoLike(4, 1, timestmp);
+        putPhotoLike(4, 2, timestmp);
+        putPhotoLike(4, 3, timestmp);
+        putPhotoLike(4, 4, timestmp);
+        putPhotoLike(4, 6, timestmp);
+        putPhotoLike(2, 1, timestmp);
     }
 
     public static void initComment() {
@@ -112,6 +113,5 @@ public class SampleData {
 //        putComment(2, 3, "card", timestmp, timestmp);
 //        putComment(3, 4, "Hay lam=))", timestmp, timestmp);
     }
-
 
 }

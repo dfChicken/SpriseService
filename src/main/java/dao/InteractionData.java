@@ -80,7 +80,7 @@ public class InteractionData {
         return result > 0;
     }
 
-    public static boolean putPhotoLike(int uid, int pid) {
+    public static boolean putPhotoLike(int uid, int pid, Timestamp created) {
         boolean insertStatus = false;
         Connection dbConn = null;
 
@@ -91,12 +91,13 @@ public class InteractionData {
                 Logger.getLogger(InteractionData.class.getName()).log(Level.SEVERE, null, ex);
             }
 
-            String query = "insert into likes(user_id, photo_id) values (?,?)";
+            String query = "insert into likes(user_id, photo_id, date_created) values (?,?,?)";
 
             PreparedStatement preparedStatement = dbConn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 
             preparedStatement.setInt(1, uid);
             preparedStatement.setInt(2, pid);
+            preparedStatement.setTimestamp(3, created);
 
             int records = preparedStatement.executeUpdate();
             if (records > 0) {
