@@ -12,9 +12,21 @@ import static dao.InteractionData.putPhotoLike;
 import static dao.InteractionData.putComment;
 import static dao.PhotoData.getTimelinePhotos;
 import entity.Photo;
+import fcm.FcmNotificationBuilder;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+import org.json.JSONException;
+import org.json.JSONObject;
 import util.Utils;
+import static util.Utils.convertListToStringArray;
 
 /**
  *
@@ -31,9 +43,15 @@ public class SampleData {
 //        }
 //        initComment();
 //        System.out.println(checkLogin("admin@gmail.com", "123"));
-        String urlencoded = "https%3A%2F%2Ffirebasestorage.googleapis.com%2Fv0%2Fb%2Fsocialapp-cc534.appspot.com%2Fo%2Fuploads%252F1489825289272.png%3Falt%3Dmedia%26token%3D19b3b02a-5bb8-47e6-8df9-969d4aa1ce26";
 
-        System.out.println(Utils.decodeURL(urlencoded));
+
+        MessageData.pushMessageNotification("hay", 2, "coinCard", 1, "cc");
+        
+//        FcmNotificationBuilder fcmNB = new FcmNotificationBuilder();
+////        fcmNB.pushNotificationForMultiIds(tokenList);
+//        for(int i=0;i<tokenList.size();i++){
+//            fcmNB.pushNotificationForId(tokenList.get(i));
+//        }
     }
 
     //initialize user data
@@ -93,8 +111,7 @@ public class SampleData {
 //        putComment(3, 3, "coin", timestmp, timestmp);
 //        putComment(2, 3, "card", timestmp, timestmp);
 //        putComment(3, 4, "Hay lam=))", timestmp, timestmp);
-        String urlencoded = "https%3A%2F%2Ffirebasestorage.googleapis.com%2Fv0%2Fb%2Fsocialapp-cc534.appspot.com%2Fo%2Fuploads%252F1489825289272.png%3Falt%3Dmedia%26token%3D19b3b02a-5bb8-47e6-8df9-969d4aa1ce26";
-
-
     }
+
+
 }

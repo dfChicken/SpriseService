@@ -6,6 +6,7 @@
 package util;
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import org.glassfish.jersey.internal.util.Base64;
@@ -37,6 +38,24 @@ public class Utils {
         return txt != null && txt.trim().length() >= 0 ? true : false;
     }
 
+    public static String convertListToStringArray(ArrayList<String> stringList) {
+        String value = "";
+        if (stringList.isEmpty()) {
+            return "";
+        }
+
+        value = value + "[";
+        for (int i = 0; i < stringList.size(); i++) {
+            if (i != stringList.size() - 1) {
+                value = value + "\"" + stringList.get(i) + "\",";
+            } else {
+                value = value + "\"" + stringList.get(i) + "\"";
+            }
+        }
+        value = value + "]";
+        return value;
+    }
+
     /**
      * Method to construct JSON with Error Msg
      *
@@ -52,6 +71,16 @@ public class Utils {
             obj.put("status", new Boolean(status));
             obj.put("error_msg", err_msg);
 
+        } catch (JSONException e) {
+            // TODO Auto-generated catch block
+        }
+        return obj.toString();
+    }
+
+    public static String constructJSON(boolean status) {
+        JSONObject obj = new JSONObject();
+        try {
+            obj.put("status", new Boolean(status));
         } catch (JSONException e) {
             // TODO Auto-generated catch block
         }

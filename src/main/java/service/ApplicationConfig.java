@@ -37,6 +37,7 @@ public class ApplicationConfig extends Application {
         resources.add(service.FileUploadSvc.class);
         resources.add(service.InteractionSvc.class);
         resources.add(service.LoginSvc.class);
+        resources.add(service.MessageSvc.class);
         resources.add(service.PhotoSvc.class);
         resources.add(service.RegisterSvc.class);
     }

@@ -8,6 +8,7 @@ package service;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dao.InteractionData;
+import dao.MessageData;
 import dao.PhotoData;
 import dao.UserData;
 import entity.Comment;
@@ -115,21 +116,6 @@ public class InteractionSvc {
         return response;
     }
 
-    @GET
-    @Path("/user/getchatted")
-    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
-    @Consumes(MediaType.APPLICATION_JSON + ";charset=utf-8")
-    public String getChattedUsers(@QueryParam("uid") int uid) {
-        String response = "";
-        Gson gson = new GsonBuilder().serializeNulls().create();
-        //allow null value
-        ArrayList<User> users = UserData.getChattedFirebaseList(uid);
-        if (!users.isEmpty()) {
-//            response = new Gson().toJson(photos);
-            response = gson.toJson(users);
-        }
-        return response;
-    }
 
     @PUT
     @Path("/user/putcommentlike")
