@@ -76,8 +76,8 @@ public class InteractionSvc {
         boolean result = false;
         Timestamp _created = new Timestamp(created);
 //        Timestamp _updated = new Timestamp(created);
-
-        result = InteractionData.putComment(uid, pid, content, _created, _created);
+        String decodedComment = Utils.decodeUTF8(content);
+        result = InteractionData.putComment(uid, pid, decodedComment, _created, _created);
         if (result) {
             return Response.status(Response.Status.CREATED).build();
         } else {
@@ -102,6 +102,36 @@ public class InteractionSvc {
     }
 
     @GET
+    @Path("/user/followers")
+    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    @Consumes(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    public String getFollowerUsers(@QueryParam("uid") int uid) {
+        String response = "";
+        Gson gson = new GsonBuilder().serializeNulls().create();
+        ArrayList<User> users = InteractionData.getFollowerUsers(uid);
+        if (!users.isEmpty()) {
+//            response = new Gson().toJson(photos);
+            response = gson.toJson(users);
+        }
+        return response;
+    }
+
+    @GET
+    @Path("/user/following")
+    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    @Consumes(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    public String getFollowingUsers(@QueryParam("uid") int uid) {
+        String response = "";
+        Gson gson = new GsonBuilder().serializeNulls().create();
+        ArrayList<User> users = InteractionData.getFollowingUsers(uid);
+        if (!users.isEmpty()) {
+//            response = new Gson().toJson(photos);
+            response = gson.toJson(users);
+        }
+        return response;
+    }
+
+    @GET
     @Path("/user/getdetails")
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
     @Consumes(MediaType.APPLICATION_JSON + ";charset=utf-8")
@@ -110,6 +140,22 @@ public class InteractionSvc {
         Gson gson = new GsonBuilder().serializeNulls().create();
         //allow null value
         User u = UserData.getSingleUserWithDetails(uid);
+        if (u != null) {
+//            response = new Gson().toJson(photos);
+            response = gson.toJson(u);
+        }
+        return response;
+    }
+
+    @GET
+    @Path("/user/info")
+    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    @Consumes(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    public String getUserInfo(@QueryParam("uid") int uid) {
+        String response = "";
+        Gson gson = new GsonBuilder().serializeNulls().create();
+        //allow null value
+        User u = UserData.getUserDataLite(uid);
         if (u != null) {
 //            response = new Gson().toJson(photos);
             response = gson.toJson(u);
@@ -183,4 +229,16 @@ public class InteractionSvc {
         }
     }
 
+    @PUT
+    @Path("/user/updavatar")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updateAvatar(@QueryParam("uid") int uid, @QueryParam("pid") int pid) {
+        boolean result = false;
+        result = UserData.updateAvatar(uid, pid);
+        if (result) {
+            return Response.status(Response.Status.OK).build();
+        } else {
+            return Response.status(Response.Status.GONE).build();
+        }
+    }
 }

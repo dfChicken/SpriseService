@@ -6,6 +6,8 @@
 package fcm;
 
 import dao.MessageData;
+import dao.UserData;
+import entity.User;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -54,10 +56,10 @@ public class FcmNotificationBuilder {
     private static final String KEY_TO = "to";
     private static final String KEY_REG_IDS = "registration_ids";
     private static final String KEY_NOTIFICATION = "notification";
-    private static final String KEY_TITLE = "title";
+    private static final String KEY_USERNAME = "username";
     private static final String KEY_TEXT = "text";
     private static final String KEY_DATA = "data";
-    private static final String KEY_USERNAME = "username";
+    private static final String KEY_EMAIL = "email";
     private static final String KEY_UID = "uid";
     private static final String KEY_FCM_TOKEN = "fcm_token";
 
@@ -139,14 +141,16 @@ public class FcmNotificationBuilder {
 
     }
 
-    public JSONObject getJsonBodyForPushMessage(String token, String message, int sender_id, String sender_name, int receiver_id, String receiver_name) {
+    public JSONObject getJsonBodyForPushMessage(String token, String message, int sender_id) {
+        User u = UserData.getUserDataLite(sender_id);
+
         JSONObject jsonObjectBody = new JSONObject();
         try {
             jsonObjectBody.put(KEY_TO, token);
             JSONObject jsonObjectData = new JSONObject();
-            jsonObjectData.put(KEY_TITLE, sender_name);
+            jsonObjectData.put(KEY_USERNAME, u.getUsername());
             jsonObjectData.put(KEY_TEXT, message);
-            jsonObjectData.put(KEY_USERNAME, sender_name);
+            jsonObjectData.put(KEY_EMAIL, u.getEmail());
             jsonObjectData.put(KEY_UID, sender_id);
             jsonObjectBody.put(KEY_DATA, jsonObjectData);
             System.out.println(jsonObjectBody.toString());
@@ -227,9 +231,9 @@ public class FcmNotificationBuilder {
         try {
             jsonObjectBody.put(KEY_REG_IDS, tokenList);
             JSONObject jsonObjectData = new JSONObject();
-            jsonObjectData.put(KEY_TITLE, "Push on Webservice");
+            jsonObjectData.put(KEY_USERNAME, "Push on Webservice");
             jsonObjectData.put(KEY_TEXT, "test");
-            jsonObjectData.put(KEY_USERNAME, "hainam.4795@gmail.com");
+            jsonObjectData.put(KEY_EMAIL, "hainam.4795@gmail.com");
             jsonObjectData.put(KEY_UID, "vyJhnmzPk9Yap3Ej0mMATjYOzE12");
             jsonObjectBody.put(KEY_DATA, jsonObjectData);
 
@@ -246,9 +250,9 @@ public class FcmNotificationBuilder {
         try {
             jsonObjectBody.put(KEY_TO, token);
             JSONObject jsonObjectData = new JSONObject();
-            jsonObjectData.put(KEY_TITLE, "Push on Webservice");
+            jsonObjectData.put(KEY_USERNAME, "Push on Webservice");
             jsonObjectData.put(KEY_TEXT, "test");
-            jsonObjectData.put(KEY_USERNAME, "hainam.4795@gmail.com");
+            jsonObjectData.put(KEY_EMAIL, "hainam.4795@gmail.com");
             jsonObjectData.put(KEY_UID, "vyJhnmzPk9Yap3Ej0mMATjYOzE12");
             jsonObjectBody.put(KEY_DATA, jsonObjectData);
         } catch (JSONException e) {

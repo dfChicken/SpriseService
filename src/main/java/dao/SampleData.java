@@ -43,9 +43,9 @@ public class SampleData {
 //        }
 //        initComment();
 //        System.out.println(checkLogin("admin@gmail.com", "123"));
-
-        MessageData.pushMessageNotification("hay", 2, "coinCard", 1, "cc");
-
+//        MessageData.pushMessageNotification("hay", 2, "coinCard", 1, "cc");
+        System.out.println( UserData.updateAvatar(2, 6));
+       
 //        FcmNotificationBuilder fcmNB = new FcmNotificationBuilder();
 ////        fcmNB.pushNotificationForMultiIds(tokenList);
 //        for(int i=0;i<tokenList.size();i++){

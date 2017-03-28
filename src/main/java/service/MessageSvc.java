@@ -10,6 +10,7 @@ import com.google.gson.GsonBuilder;
 import dao.InteractionData;
 import dao.MessageData;
 import entity.Message;
+import entity.Notification;
 import entity.Token;
 import entity.User;
 import java.util.ArrayList;
@@ -38,12 +39,27 @@ public class MessageSvc {
     @Consumes(MediaType.APPLICATION_JSON + ";charset=utf-8")
     public String getChattedUsers(@QueryParam("uid") int uid) {
         String response = "";
-        Gson gson = new GsonBuilder().serializeNulls().create();
         //allow null value
+        Gson gson = new GsonBuilder().serializeNulls().create();
+
         ArrayList<User> users = MessageData.getChattedFirebaseList(uid);
         if (!users.isEmpty()) {
-//            response = new Gson().toJson(photos);
+        //response = new Gson().toJson(photos);
             response = gson.toJson(users);
+        }
+        return response;
+    }
+
+    @GET
+    @Path("/photos/notification")
+    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    @Consumes(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    public String getPhotosNotificationList(@QueryParam("uid") int uid) {
+        String response = "";
+        Gson gson = new GsonBuilder().serializeNulls().create();
+        ArrayList<Notification> notifications = MessageData.getPhotosNotificationList(uid);
+        if (!notifications.isEmpty()) {
+            response = gson.toJson(notifications);
         }
         return response;
     }
@@ -113,7 +129,7 @@ public class MessageSvc {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public String pushMessageNotification(Message msg) {
-        MessageData.pushMessageNotification(msg.getMessage(), msg.getSender_id(), msg.getSender_name(), msg.getReceiver_id(), msg.getReceiver_name());
+        MessageData.pushMessageNotification(msg.getMessage(), msg.getSender_id(), msg.getReceiver_id());
 
         return Utils.constructJSON(true);
     }

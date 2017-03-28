@@ -15,7 +15,7 @@ public class Comment {
 
     private String username;
     private int profile_photo_id;
-    private String profile_image_url;
+    private String profile_photo_url;
     private int uid;
     private int pid;
     private String content;
@@ -39,12 +39,12 @@ public class Comment {
         this.profile_photo_id = profile_photo_id;
     }
 
-    public String getProfile_image_url() {
-        return profile_image_url;
+    public String getProfile_photo_url() {
+        return profile_photo_url;
     }
 
-    public void setProfile_image_url(String profile_image_url) {
-        this.profile_image_url = profile_image_url;
+    public void setProfile_photo_url(String profile_image_url) {
+        this.profile_photo_url = profile_image_url;
     }
 
     public int getLikes() {

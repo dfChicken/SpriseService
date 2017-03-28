@@ -30,6 +30,15 @@ public class User {
     private int posts;
     private int followers;
     private int following;
+    private boolean isFollowing;
+
+    public boolean isIsFollowing() {
+        return isFollowing;
+    }
+
+    public void setIsFollowing(boolean isFollowing) {
+        this.isFollowing = isFollowing;
+    }
 
     public int getPosts() {
         return posts;

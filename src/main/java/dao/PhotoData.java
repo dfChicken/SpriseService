@@ -264,25 +264,24 @@ public class PhotoData {
             ex.printStackTrace();
         }
 
-        String query = "select TimelinePhotos.*, ph.image_url as 'profile_image_url' from\n"
-                + "(\n"
-                + "select users.username, users.profile_photo_id, FetchPhotos.* from\n"
-                + "(select FetchLikes.*, count(likes.user_id) as 'likes' from \n"
+        String query = "select TimelinePhotos.*, ph.image_url as 'profile_image_url', count(comments.user_id) as 'comments' from\n"
+                + "(select users.username, users.profile_photo_id, FetchPhotos.* from\n"
+                + "(select FetchLikesComments.*, count(likes.user_id) as 'likes' from \n"
                 + "(select p.* , if(likes.photo_id is null, 'false','true') as 'isLiked'\n"
                 + "from \n"
-                + "(\n"
-                + "select photos.* from photos inner join (select follows.follower_id as uid from follows where follows.user_id = " + uid + ") as Following\n"
+                + "(select photos.* from photos inner join (select follows.follower_id as uid from follows where follows.user_id = " + uid + ") as Following\n"
                 + "where photos.user_id = Following.uid \n"
                 + "union\n"
                 + "select * from photos where user_id = " + uid + "\n"
                 + ") as p left join likes on likes.photo_id = p.photo_id and likes.user_id = " + uid + ")\n"
-                + "as FetchLikes\n"
-                + "left join likes on FetchLikes.photo_id = likes.photo_id\n"
-                + "group by FetchLikes.photo_id ) \n"
+                + "as FetchLikesComments\n"
+                + "left join likes on FetchLikesComments.photo_id = likes.photo_id\n"
+                + "group by FetchLikesComments.photo_id ) \n"
                 + "as FetchPhotos \n"
-                + "inner join users where users.user_id = FetchPhotos.user_id and FetchPhotos.is_avatar = 0\n"
+                + "inner join users where users.user_id = FetchPhotos.user_id \n"
                 + ") as TimelinePhotos\n"
                 + "left join photos ph on TimelinePhotos.profile_photo_id = ph.photo_id\n"
+                + "left join comments on TimelinePhotos.photo_id = comments.photo_id\n"
                 + "group by date_updated desc";
         try {
             st = dbConn.createStatement();
@@ -304,6 +303,7 @@ public class PhotoData {
                 p.setCreatedTime(rs.getTimestamp("date_created").getTime());
                 p.setUpdatedTime(rs.getTimestamp("date_updated").getTime());
                 p.setLikes(rs.getInt("likes"));
+                p.setComments(rs.getInt("comments"));
                 p.setIsLiked(rs.getBoolean("isLiked"));
                 timelinePhotos.add(p);
             }

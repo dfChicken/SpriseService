@@ -5,6 +5,7 @@
  */
 package dao;
 
+import entity.Notification;
 import entity.User;
 import fcm.FcmNotificationBuilder;
 import java.sql.Connection;
@@ -230,14 +231,68 @@ public class MessageData {
         return chattedUsers;
     }
 
-    public static void pushMessageNotification(String message, int sender_id, String sender_name, int receiver_id, String receiver_name) {
+    public static ArrayList<Notification> getPhotosNotificationList(int uid) {
+        ArrayList<Notification> notiList = new ArrayList<>();
+        Connection dbConn = null;
+
+        Statement st = null;
+        ResultSet rs = null;
+
+        try {
+            dbConn = DBConnection.createConnection();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        String query = "select * from\n"
+                + "(select u.username, '' as id, l.user_id, l.photo_id, l.date_created as timedate , p.image_url , 'like' as type from users u inner join likes l inner join (select * from photos where user_id = " + uid + ") as p\n"
+                + "where l.user_id = u.user_id and l.photo_id = p.photo_id\n"
+                + "union\n"
+                + "select u.username, cm.comment_id as id, cm.user_id, cm.photo_id , cm.date_updated as timedate , p.image_url, 'comment' as type from users u inner join comments cm inner join (select * from photos where user_id = " + uid + ") as p\n"
+                + "where cm.user_id = u.user_id and cm.photo_id = p.photo_id) as notification where user_id <> " + uid + "\n"
+                + "order by timedate desc";
+        try {
+            st = dbConn.createStatement();
+            rs = st.executeQuery(query);
+            while (rs.next()) {
+                Notification n = new Notification();
+                n.setUsername(rs.getString("username"));
+                n.setId(rs.getInt("id"));
+                n.setUid(rs.getInt("user_id"));
+                n.setPid(rs.getInt("photo_id"));
+                n.setTimedate(rs.getTimestamp("timedate").getTime());
+                n.setImage_url(rs.getString("image_url"));
+                n.setType(rs.getString("type"));
+                notiList.add(n);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (st != null) {
+                    st.close();
+                }
+                if (dbConn != null) {
+                    dbConn.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return notiList;
+    }
+
+    public static void pushMessageNotification(String message, int sender_id, int receiver_id) {
         ArrayList<String> tokenList = MessageData.getUserFirebaseTokenList(receiver_id);
         FcmNotificationBuilder fnb = new FcmNotificationBuilder();
         JSONObject jSONObject;
         if (tokenList.size() > 0) {
             for (int i = 0; i < tokenList.size(); i++) {
-                jSONObject = fnb.getJsonBodyForPushMessage(tokenList.get(i), message, sender_id, sender_name, receiver_id, receiver_name);
-                fnb.pushNotification2(receiver_id,jSONObject);
+                jSONObject = fnb.getJsonBodyForPushMessage(tokenList.get(i), message, sender_id);
+                fnb.pushNotification2(receiver_id, jSONObject);
             }
         }
 

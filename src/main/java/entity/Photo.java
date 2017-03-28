@@ -30,6 +30,7 @@ public class Photo {
 
     private boolean isLiked;
     private int likes;
+    private int comments;
 
     public int getPid() {
         return pid;
@@ -133,6 +134,14 @@ public class Photo {
 
     public void setLikes(int likes) {
         this.likes = likes;
+    }
+
+    public int getComments() {
+        return comments;
+    }
+
+    public void setComments(int comments) {
+        this.comments = comments;
     }
 
     public String getUsername() {

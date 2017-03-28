@@ -332,6 +332,67 @@ public class UserData {
         }
     }
 
+    public static User getUserDataLite(int uid) {
+        User user = null;
+        Connection dbConn = null;
+        Statement st = null;
+        ResultSet rs = null;
+
+        try {
+            dbConn = DBConnection.createConnection();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        String query = "select u.*, photos.image_url as 'profile_photo_url' from\n"
+                + "(select * from users where user_id = " + uid + ") as u\n"
+                + "left join photos on u.profile_photo_id = photos.photo_id";
+
+        try {
+            st = dbConn.createStatement();
+            rs = st.executeQuery(query);
+            if (rs.next()) {
+                user = new User();
+                user.setUid(rs.getInt("user_id"));
+                user.setUsername(rs.getString("username"));
+                user.setEmail(rs.getString("email"));
+                user.setPassword("");
+                user.setFirstName("");
+                user.setLastName("");
+                user.setDescription("");
+                user.setProfilePhotoId(rs.getInt("profile_photo_id"));
+                user.setProfile_photo_url(rs.getString("profile_photo_url"));
+                user.setGender(rs.getInt("gender"));
+                user.setUserStatus(rs.getInt("user_status"));
+                user.setUserActivated(rs.getInt("user_activated"));
+                user.setCreatedTime(rs.getTimestamp("date_created"));
+                user.setUpdatedTime(rs.getTimestamp("date_updated"));
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (st != null) {
+                    st.close();
+                }
+                if (dbConn != null) {
+                    dbConn.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        if (null != user) {
+            return user;
+        } else {
+            return null;
+        }
+    }
+
     public static User getSingleUserWithDetails(int uid) {
         User user = null;
         Connection dbConn = null;
@@ -397,5 +458,43 @@ public class UserData {
         }
     }
 
- 
+    public static boolean updateAvatar(int uid, int pid) {
+        int result = 0;
+        Connection dbConn = null;
+        Statement st = null;
+        try {
+            try {
+                dbConn = DBConnection.createConnection();
+            } catch (Exception ex) {
+                Logger.getLogger(PhotoData.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            String queryUpdatePhoto = "update photos set is_avatar = 1 where photo_id = " + pid;
+            String queryUpdateAva = "update users set profile_photo_id = " + pid + " where user_id = " + uid;
+
+            st = dbConn.createStatement();
+            if (st.executeUpdate(queryUpdatePhoto) > 0) {
+                if (st.executeUpdate(queryUpdateAva) > 0) {
+                    result = 1;
+                }
+            }
+            if (dbConn != null) {
+                dbConn.close();
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                if (st != null) {
+                    st.close();
+                }
+                if (dbConn != null) {
+                    dbConn.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return result > 0;
+    }
 }

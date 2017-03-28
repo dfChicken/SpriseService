@@ -8,6 +8,7 @@ package dao;
 import static dao.PhotoData.checkLikedPhoto;
 import entity.Comment;
 import entity.Photo;
+import entity.User;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -158,7 +159,7 @@ public class InteractionData {
             preparedStatement.setTimestamp(5, updated);
 
             int records = preparedStatement.executeUpdate();
-            
+
             if (records > 0) {
                 insertStatus = true;
             }
@@ -263,7 +264,7 @@ public class InteractionData {
             ex.printStackTrace();
         }
         String query = "select * from \n"
-                + "(select u.username,u.profile_photo_id,  photos.image_url as 'profile_image_url', FetchComments.* from users u inner join\n"
+                + "(select u.username,u.profile_photo_id,  photos.image_url as 'profile_photo_url', FetchComments.* from users u inner join\n"
                 + "(select c.*, count(cl.user_id) as 'likes' from comments c left join comments_likes cl on c.comment_id = cl.comment_id\n"
                 + "group by c.date_updated desc) as FetchComments\n"
                 + "on u.user_id = FetchComments.user_id\n"
@@ -280,7 +281,7 @@ public class InteractionData {
                 c.setUsername(rs.getString("username"));
                 c.setLikes(rs.getInt("likes"));
                 c.setProfile_photo_id(rs.getInt("profile_photo_id"));
-                c.setProfile_image_url(rs.getString("profile_image_url"));
+                c.setProfile_photo_url(rs.getString("profile_photo_url"));
                 c.setCreatedTime(rs.getTimestamp("date_created").getTime());
                 c.setUpdatedTime(rs.getTimestamp("date_updated").getTime());
                 commentList.add(c);
@@ -305,4 +306,109 @@ public class InteractionData {
         return commentList;
     }
 
+    public static ArrayList<User> getFollowingUsers(int uid) {
+        ArrayList<User> followingUserList = new ArrayList<>();
+        Connection dbConn = null;
+
+        Statement st = null;
+        ResultSet rs = null;
+
+        try {
+            dbConn = DBConnection.createConnection();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        String query = "select c.user_id, u.username, u.email , u.profile_photo_id, photos.image_url as 'profile_photo_url', c.isFollowing from users u inner join\n"
+                + "(\n"
+                + "	select follower_id as 'user_id', 'true' as 'isFollowing' from follows where user_id = " + uid + "\n"
+                + ")\n"
+                + "as c \n"
+                + "on u.user_id = c.user_id\n"
+                + "left join photos on u.profile_photo_id = photos.photo_id";
+        try {
+            st = dbConn.createStatement();
+            rs = st.executeQuery(query);
+            while (rs.next()) {
+                User u = new User();
+                u.setUid(rs.getInt("user_id"));
+                u.setUsername(rs.getString("username"));
+                u.setEmail(rs.getString("email"));
+                u.setProfilePhotoId(rs.getInt("profile_photo_id"));
+                u.setProfile_photo_url(rs.getString("profile_photo_url"));
+                u.setIsFollowing(rs.getBoolean("isFollowing"));
+                followingUserList.add(u);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (st != null) {
+                    st.close();
+                }
+                if (dbConn != null) {
+                    dbConn.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return followingUserList;
+    }
+
+    public static ArrayList<User> getFollowerUsers(int uid) {
+        ArrayList<User> followerUserList = new ArrayList<>();
+        Connection dbConn = null;
+
+        Statement st = null;
+        ResultSet rs = null;
+
+        try {
+            dbConn = DBConnection.createConnection();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        String query = "select c.user_id, u.username, u.email , u.profile_photo_id, photos.image_url as 'profile_photo_url', c.isFollowing from users u inner join\n"
+                + "(\n"
+                + "	select f.*, if(f2.user_id is null, 'false','true') as 'isFollowing' from \n"
+                + "	(select * from follows where follower_id = " + uid + ") as f\n"
+                + "	left join follows f2 on f2.user_id = f.follower_id and f2.follower_id = f.user_id\n"
+                + ")\n"
+                + "as c \n"
+                + "on u.user_id = c.user_id\n"
+                + "left join photos on u.profile_photo_id = photos.photo_id";
+        try {
+            st = dbConn.createStatement();
+            rs = st.executeQuery(query);
+            while (rs.next()) {
+                User u = new User();
+                u.setUid(rs.getInt("user_id"));
+                u.setUsername(rs.getString("username"));
+                u.setEmail(rs.getString("email"));
+                u.setProfilePhotoId(rs.getInt("profile_photo_id"));
+                u.setProfile_photo_url(rs.getString("profile_photo_url"));
+                u.setIsFollowing(rs.getBoolean("isFollowing"));
+                followerUserList.add(u);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (st != null) {
+                    st.close();
+                }
+                if (dbConn != null) {
+                    dbConn.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return followerUserList;
+    }
 }
