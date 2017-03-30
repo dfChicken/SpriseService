@@ -123,7 +123,7 @@ public class UserData {
      * @return
      * @throws Exception
      */
-    public static boolean checkEmailExist(String email) throws Exception {
+    public static boolean checkEmailExist(String email) {
         boolean isEmailExisted = false;
         Connection dbConn = null;
         try {
@@ -141,17 +141,21 @@ public class UserData {
                 //System.out.println(rs.getString(1) + rs.getString(2) + rs.getString(3));
                 isEmailExisted = true;
             }
-        } catch (SQLException sqle) {
-            throw sqle;
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            if (dbConn != null) {
-                dbConn.close();
+            if (rs != null) {
+                rs.close();
             }
-            throw e;
+            if (stmt != null) {
+                stmt.close();
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
         } finally {
-            if (dbConn != null) {
-                dbConn.close();
+            try {
+                if (dbConn != null) {
+                    dbConn.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
             }
         }
         return isEmailExisted;
@@ -225,7 +229,7 @@ public class UserData {
      */
     public static boolean registerUser(String usrname, String email, String password, String fname,
             String lname, String des, int gender, int status, int activated,
-            Timestamp created, Timestamp updated) throws SQLException, Exception {
+            Timestamp created, Timestamp updated) {
 
         boolean insertStatus = false;
         Connection dbConn = null;
@@ -260,13 +264,14 @@ public class UserData {
                     insertStatus = true;
                 }
             } catch (SQLException ex) {
-                if (dbConn != null) {
-                    dbConn.close();
-                }
-                throw ex;
+                ex.printStackTrace();
             } finally {
-                if (dbConn != null) {
-                    dbConn.close();
+                try {
+                    if (dbConn != null) {
+                        dbConn.close();
+                    }
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
                 }
             }
         }
@@ -304,8 +309,8 @@ public class UserData {
                 user.setGender(rs.getInt("gender"));
                 user.setUserStatus(rs.getInt("user_status"));
                 user.setUserActivated(rs.getInt("user_activated"));
-                user.setCreatedTime(rs.getTimestamp("date_created"));
-                user.setUpdatedTime(rs.getTimestamp("date_updated"));
+                user.setCreatedTime(rs.getTimestamp("date_created").getTime());
+                user.setUpdatedTime(rs.getTimestamp("date_updated").getTime());
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -365,8 +370,8 @@ public class UserData {
                 user.setGender(rs.getInt("gender"));
                 user.setUserStatus(rs.getInt("user_status"));
                 user.setUserActivated(rs.getInt("user_activated"));
-                user.setCreatedTime(rs.getTimestamp("date_created"));
-                user.setUpdatedTime(rs.getTimestamp("date_updated"));
+                user.setCreatedTime(rs.getTimestamp("date_created").getTime());
+                user.setUpdatedTime(rs.getTimestamp("date_updated").getTime());
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -427,8 +432,8 @@ public class UserData {
                 user.setGender(rs.getInt("gender"));
                 user.setUserStatus(rs.getInt("user_status"));
                 user.setUserActivated(rs.getInt("user_activated"));
-                user.setCreatedTime(rs.getTimestamp("date_created"));
-                user.setUpdatedTime(rs.getTimestamp("date_updated"));
+                user.setCreatedTime(rs.getTimestamp("date_created").getTime());
+                user.setUpdatedTime(rs.getTimestamp("date_updated").getTime());
                 user.setPosts(rs.getInt("posts"));
                 user.setFollowers(rs.getInt("followers"));
                 user.setFollowing(rs.getInt("following"));

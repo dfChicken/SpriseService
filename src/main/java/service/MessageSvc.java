@@ -133,5 +133,12 @@ public class MessageSvc {
 
         return Utils.constructJSON(true);
     }
-
+    
+    @POST
+    @Path("/pushPhotoNoti")
+    @Produces(MediaType.APPLICATION_JSON)
+    public String pushPhotoNotification(@QueryParam("type") int type, @QueryParam("pid") int pid, @QueryParam("uid") int uid){
+        MessageData.pushPhotoNotification(type, pid, uid);
+        return Utils.constructJSON(true);
+    }
 }

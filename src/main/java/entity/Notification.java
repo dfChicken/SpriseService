@@ -72,7 +72,16 @@ public class Notification implements Serializable {
         this.type = type;
     }
 
+    public String getProfile_photo_url() {
+        return profile_photo_url;
+    }
+
+    public void setProfile_photo_url(String profile_photo_url) {
+        this.profile_photo_url = profile_photo_url;
+    }
+
     private String username;
+    private String profile_photo_url;
     private int id;
     private int uid;
     private int pid;

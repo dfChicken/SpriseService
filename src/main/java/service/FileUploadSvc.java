@@ -93,7 +93,7 @@ public class FileUploadSvc {
                     }
                 }
             } catch (Exception e) {
-                responseStatus = Utils.constructFailed(false, e.getLocalizedMessage());
+                responseStatus = Utils.constructFailed("upload", false, e.getLocalizedMessage());
             }
         }
 
@@ -111,11 +111,10 @@ public class FileUploadSvc {
         return responseStatus;
     }
 
-    
     @POST
     @Produces(MediaType.TEXT_PLAIN)
     @Path("/postLink")
-    public String postLink(@QueryParam("link") String link){
+    public String postLink(@QueryParam("link") String link) {
         return link;
     }
 }

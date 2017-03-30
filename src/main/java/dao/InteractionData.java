@@ -411,4 +411,56 @@ public class InteractionData {
         }
         return followerUserList;
     }
+
+    public static ArrayList<User> getUsersByNamePrefix(int uid, String prefix) {
+        ArrayList<User> followerUserList = new ArrayList<>();
+        Connection dbConn = null;
+
+        Statement st = null;
+        ResultSet rs = null;
+
+        try {
+            dbConn = DBConnection.createConnection();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        String query = "select f.user_id, f.username, f.email, f.first_name, f.last_name, f.profile_photo_id, \n"
+                + "photos.image_url as 'profile_photo_url', if(f2.user_id is null, 'false', 'true') as 'isFollowing' from\n"
+                + "	(select *  from users where username like '%" + prefix + "%' and user_id <> " + uid + ") as f\n"
+                + "left join follows f2 on f2.follower_id = f.user_id and f2.user_id = " + uid + "\n"
+                + "left join photos on f.profile_photo_id = photos.photo_id";
+        try {
+            st = dbConn.createStatement();
+            rs = st.executeQuery(query);
+            while (rs.next()) {
+                User u = new User();
+                u.setUid(rs.getInt("user_id"));
+                u.setUsername(rs.getString("username"));
+                u.setEmail(rs.getString("email"));
+                u.setFirstName(rs.getString("first_name"));
+                u.setLastName(rs.getString("last_name"));
+                u.setProfilePhotoId(rs.getInt("profile_photo_id"));
+                u.setProfile_photo_url(rs.getString("profile_photo_url"));
+                u.setIsFollowing(rs.getBoolean("isFollowing"));
+                followerUserList.add(u);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (st != null) {
+                    st.close();
+                }
+                if (dbConn != null) {
+                    dbConn.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return followerUserList;
+    }
 }

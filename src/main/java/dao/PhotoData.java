@@ -192,11 +192,11 @@ public class PhotoData {
         }
     }
 
-    public static boolean deletePhoto(int pid) {
+    public static boolean deletePhoto(int uid, int pid) {
         int result = 0;
         Connection dbConn = null;
         Statement stmt = null;
-        String sql = "delete from photos where photo_id = " + pid;
+        String sql = "delete from photos where photo_id = " + pid + " and user_id = " + uid;
 
         try {
             dbConn = DBConnection.createConnection();
@@ -443,4 +443,44 @@ public class PhotoData {
         return allPhotos;
     }
 
+    public static int getPhotoOwnerId(int pid) {
+        int user_id = -1;
+        Connection dbConn = null;
+        Statement st = null;
+        ResultSet rs = null;
+
+        try {
+            dbConn = DBConnection.createConnection();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        String query = "select user_id from photos where photos.photo_id = " + pid;
+
+        try {
+            st = dbConn.createStatement();
+            rs = st.executeQuery(query);
+            if (rs.next()) {
+                user_id = rs.getInt("user_id");
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (st != null) {
+                    st.close();
+                }
+                if (dbConn != null) {
+                    dbConn.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        return user_id;
+    }
 }

@@ -48,6 +48,7 @@ public class InteractionSvc {
         Timestamp date_created = new Timestamp(created);
         result = InteractionData.putPhotoLike(uid, pid, date_created);
         if (result) {
+            MessageData.pushPhotoNotification(MessageData.TYPE_LIKE, pid, uid);
             return Response.status(Response.Status.CREATED).build();
         } else {
             return Response.status(Response.Status.CONFLICT).build();
@@ -79,6 +80,7 @@ public class InteractionSvc {
         String decodedComment = Utils.decodeUTF8(content);
         result = InteractionData.putComment(uid, pid, decodedComment, _created, _created);
         if (result) {
+            MessageData.pushPhotoNotification(MessageData.TYPE_COMMENT, pid, uid);
             return Response.status(Response.Status.CREATED).build();
         } else {
             return Response.status(Response.Status.CONFLICT).build();
@@ -126,6 +128,21 @@ public class InteractionSvc {
         ArrayList<User> users = InteractionData.getFollowingUsers(uid);
         if (!users.isEmpty()) {
 //            response = new Gson().toJson(photos);
+            response = gson.toJson(users);
+        }
+        return response;
+    }
+
+    @GET
+    @Path("/user/searchusers")
+    @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    @Consumes(MediaType.APPLICATION_JSON + ";charset=utf-8")
+    public String getUsersByNamePrefix(@QueryParam("uid") int uid, @QueryParam("prefix") String prefix) {
+        String response = "";
+        Gson gson = new GsonBuilder().serializeNulls().create();
+        String decodedQuery = Utils.decodeUTF8(prefix);
+        ArrayList<User> users = InteractionData.getUsersByNamePrefix(uid, decodedQuery);
+        if (!users.isEmpty()) {
             response = gson.toJson(users);
         }
         return response;

@@ -16,6 +16,8 @@ import fcm.FcmNotificationBuilder;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
@@ -43,9 +45,17 @@ public class SampleData {
 //        }
 //        initComment();
 //        System.out.println(checkLogin("admin@gmail.com", "123"));
-//        MessageData.pushMessageNotification("hay", 2, "coinCard", 1, "cc");
-        System.out.println( UserData.updateAvatar(2, 6));
-       
+//        MessageData.pushMessageNotification("hay", 2, 1);
+//        MessageData.pushPhotoNotification(MessageData.TYPE_LIKE,3,1);
+//        PhotoData.deletePhoto(3, 3);
+//        System.out.println( UserData.updateAvatar(2, 6));
+        Pattern p = Pattern.compile("^[a-zA-Z0-9_.]+$");
+        Matcher m = p.matcher("coinCard");
+        if(m.matches()){
+            System.out.println("RegisterActivity" + "Match!");
+        } else {
+            System.out.println("cặc");
+        }
 //        FcmNotificationBuilder fcmNB = new FcmNotificationBuilder();
 ////        fcmNB.pushNotificationForMultiIds(tokenList);
 //        for(int i=0;i<tokenList.size();i++){

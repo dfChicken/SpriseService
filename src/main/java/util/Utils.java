@@ -145,10 +145,10 @@ public class Utils {
         return obj.toString();
     }
 
-    public static String constructFailed(boolean status, String err_msg) {
+    public static String constructFailed(String type, boolean status, String err_msg) {
         JSONObject obj = new JSONObject();
         try {
-            obj.put("tag", "upload");
+            obj.put("tag", type);
             obj.put("status", status);
             obj.put("error_msg", "" + err_msg);
 

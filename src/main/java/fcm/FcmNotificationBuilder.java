@@ -56,13 +56,19 @@ public class FcmNotificationBuilder {
     private static final String KEY_TO = "to";
     private static final String KEY_REG_IDS = "registration_ids";
     private static final String KEY_NOTIFICATION = "notification";
-    private static final String KEY_USERNAME = "username";
+    // json related data key for message notification push
+    private static final String KEY_SENDER_NAME = "sender_name";
     private static final String KEY_TEXT = "text";
-    private static final String KEY_DATA = "data";
     private static final String KEY_EMAIL = "email";
-    private static final String KEY_UID = "uid";
-    private static final String KEY_FCM_TOKEN = "fcm_token";
+    // json related data key for like or comment notification push
+    private static final String KEY_PHOTO_ID = "pid";
+    private static final String KEY_SENDER_ID = "sender_id";
+    private static final String KEY_RECEIVER_ID = "receiver_id";
+    private static final String KEY_PUSH_TYPE = "type";
+    // object data
+    private static final String KEY_DATA = "data";
 
+//    private static final String KEY_FCM_TOKEN = "fcm_token";
     private ArrayList<String> tokenList;
     private String token;
 
@@ -103,11 +109,11 @@ public class FcmNotificationBuilder {
         });
     }
 
-    public void pushNotification2(final int receiver_id, final JSONObject jSONObjectBody) {
+    public void pushMsgNoti(final int receiver_id, final JSONObject jSONObjectBody) {
         try {
             CloseableHttpClient client = HttpClientBuilder.create().build();
 
-            HttpPost request  = new HttpPost(FCM_URL);
+            HttpPost request = new HttpPost(FCM_URL);
             request.addHeader(AUTHORIZATION, AUTH_KEY);
             request.addHeader(CONTENT_TYPE, APPLICATION_JSON);
 
@@ -124,14 +130,14 @@ public class FcmNotificationBuilder {
             responseAsString = out.toString("UTF-8");
             out.close();
 
-            System.out.println(responseAsString);
-//            JSONObject jsonObject = new JSONObject(responseAsString);
-//            if (jsonObject.getInt("failure") == 1) {
-//                String failedToken = jSONObjectBody.getString(KEY_TO);
-//                //tự động xóa failed id
-//                System.out.println("Send push message failed for regId: " + jSONObjectBody.getString(KEY_TO));
-//                MessageData.deleteUserFirebaseToken(receiver_id, failedToken);
-//            }
+//            System.out.println(responseAsString);
+            JSONObject jsonObject = new JSONObject(responseAsString);
+            if (jsonObject.getInt("failure") == 1) {
+                String failedToken = jSONObjectBody.getString(KEY_TO);
+                //tự động xóa failed id
+                System.out.println("Send push message failed for regId: " + jSONObjectBody.getString(KEY_TO));
+                MessageData.deleteUserFirebaseToken(receiver_id, failedToken);
+            }
 
             response.close();
             client.close();
@@ -141,17 +147,21 @@ public class FcmNotificationBuilder {
 
     }
 
-    public JSONObject getJsonBodyForPushMessage(String token, String message, int sender_id) {
-        User u = UserData.getUserDataLite(sender_id);
+    public JSONObject getJsonMsgNotification(String token, String message, int sender_id, int receiver_id) {
+        User sender = UserData.getUserDataLite(sender_id);
 
         JSONObject jsonObjectBody = new JSONObject();
         try {
+            //token
             jsonObjectBody.put(KEY_TO, token);
             JSONObject jsonObjectData = new JSONObject();
-            jsonObjectData.put(KEY_USERNAME, u.getUsername());
+            //data
+            jsonObjectData.put(KEY_SENDER_NAME, sender.getUsername());
             jsonObjectData.put(KEY_TEXT, message);
-            jsonObjectData.put(KEY_EMAIL, u.getEmail());
-            jsonObjectData.put(KEY_UID, sender_id);
+            jsonObjectData.put(KEY_EMAIL, sender.getEmail());
+            jsonObjectData.put(KEY_SENDER_ID, sender_id);
+            jsonObjectData.put(KEY_RECEIVER_ID, receiver_id);
+            //object data
             jsonObjectBody.put(KEY_DATA, jsonObjectData);
             System.out.println(jsonObjectBody.toString());
         } catch (JSONException e) {
@@ -160,101 +170,24 @@ public class FcmNotificationBuilder {
         return jsonObjectBody;
     }
 
-    @Deprecated
-    public void pushNotificationForMultiIds(ArrayList<String> tokenList) {
-        this.tokenList = tokenList;
+    public JSONObject getJsonPhotoNotification(String token, int photo_id, int sender_id, int receiver_id, int type) {
+        User sender = UserData.getUserDataLite(sender_id);
 
-        RequestBody requestBody = null;
-        try {
-            requestBody = RequestBody.create(MEDIA_TYPE_JSON, getJsonBodyForRegIds().toString());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        Request request = new Request.Builder()
-                .addHeader(CONTENT_TYPE, APPLICATION_JSON)
-                .addHeader(AUTHORIZATION, AUTH_KEY)
-                .url(FCM_URL)
-                .post(requestBody)
-                .build();
-
-        Call call = new OkHttpClient().newCall(request);
-        call.enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                System.out.println("onGetAllUsersFailure: " + e.getMessage());
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                System.out.println("onResponse: " + response.body().string());
-            }
-        });
-
-    }
-
-    @Deprecated
-    public void pushNotificationForId(String token) {
-        this.token = token;
-
-        RequestBody requestBody = null;
-        try {
-            requestBody = RequestBody.create(MEDIA_TYPE_JSON, getJsonBodyOneId().toString());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        Request request = new Request.Builder()
-                .addHeader(CONTENT_TYPE, APPLICATION_JSON)
-                .addHeader(AUTHORIZATION, AUTH_KEY)
-                .url(FCM_URL)
-                .post(requestBody)
-                .build();
-
-        Call call = new OkHttpClient().newCall(request);
-        call.enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-                System.out.println("onGetAllUsersFailure: " + e.getMessage());
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                System.out.println("onResponse: " + response.body().string());
-            }
-        });
-    }
-
-    @Deprecated
-    private JSONObject getJsonBodyForRegIds() {
         JSONObject jsonObjectBody = new JSONObject();
         try {
-            jsonObjectBody.put(KEY_REG_IDS, tokenList);
-            JSONObject jsonObjectData = new JSONObject();
-            jsonObjectData.put(KEY_USERNAME, "Push on Webservice");
-            jsonObjectData.put(KEY_TEXT, "test");
-            jsonObjectData.put(KEY_EMAIL, "hainam.4795@gmail.com");
-            jsonObjectData.put(KEY_UID, "vyJhnmzPk9Yap3Ej0mMATjYOzE12");
-            jsonObjectBody.put(KEY_DATA, jsonObjectData);
-
-            System.out.println(jsonObjectBody.toString());
-        } catch (JSONException e) {
-            System.out.println("getValidJsonBody: An error occurred when create new json object!");
-        }
-        return jsonObjectBody;
-    }
-
-    @Deprecated
-    private JSONObject getJsonBodyOneId() {
-        JSONObject jsonObjectBody = new JSONObject();
-        try {
+            //token
             jsonObjectBody.put(KEY_TO, token);
             JSONObject jsonObjectData = new JSONObject();
-            jsonObjectData.put(KEY_USERNAME, "Push on Webservice");
-            jsonObjectData.put(KEY_TEXT, "test");
-            jsonObjectData.put(KEY_EMAIL, "hainam.4795@gmail.com");
-            jsonObjectData.put(KEY_UID, "vyJhnmzPk9Yap3Ej0mMATjYOzE12");
+            //data
+            jsonObjectData.put(KEY_PUSH_TYPE, type);
+            jsonObjectData.put(KEY_PHOTO_ID, photo_id);
+            jsonObjectData.put(KEY_SENDER_ID, sender_id);
+            jsonObjectData.put(KEY_SENDER_NAME, sender.getUsername());
+            jsonObjectData.put(KEY_RECEIVER_ID, receiver_id);
+
+            //object data
             jsonObjectBody.put(KEY_DATA, jsonObjectData);
+            System.out.println(jsonObjectBody.toString());
         } catch (JSONException e) {
             System.out.println("getValidJsonBody: An error occurred when create new json object!");
         }

@@ -79,7 +79,7 @@ public class LoginSvc {
      * @param pwd
      * @return
      */
-    private String issueToken(String email, String pwd) {
+    public static String issueToken(String email, String pwd) {
         // Issue a token (can be a random String persisted to a database or a JWT token)
         // The issued token must be associated to a user
         // Return the issued token

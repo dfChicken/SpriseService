@@ -90,16 +90,15 @@ public class PhotoSvc {
     @DELETE
     @Path("/delete/single")
     @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-    public String deletePhoto(@QueryParam("pid") int pid) {
+    public Response deletePhoto(@QueryParam("uid") int uid, @QueryParam("pid") int pid) {
 //        String response = "";
-        boolean result = PhotoData.deletePhoto(pid);
-//        if (result) {
-//            response = Utility.deleteJsonResponse(pid, Utility.PHOTO, result);
-//        } else {
-//            response = Utility.deleteJsonResponse(pid, Utility.PHOTO, false);
-//        }
-        return Utils.entityJsonResponse(Utils.DELETE, pid, Utils.PHOTO, result);
+        boolean result = PhotoData.deletePhoto(uid, pid);
+
+        if (result) {
+            return Response.status(Response.Status.OK).build();
+        } else {
+            return Response.status(Response.Status.GONE).build();
+        }
     }
 
     @PUT
