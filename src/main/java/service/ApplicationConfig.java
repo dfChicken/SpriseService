@@ -7,6 +7,7 @@ package service;
 
 import java.util.Set;
 import javax.ws.rs.core.Application;
+import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.media.multipart.MultiPartFeature;
 
 import provider.AuthenticationFilter;
@@ -24,6 +25,7 @@ public class ApplicationConfig extends Application {
         addRestResourceClasses(resources);
         // khai báo sử dụng authentication filter
         resources.add(AuthenticationFilter.class);
+        resources.add(JacksonFeature.class);
         return resources;
     }
 

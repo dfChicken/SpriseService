@@ -5,15 +5,9 @@
  */
 package entity;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.JsonGetter;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.io.Serializable;
-import java.sql.Timestamp;
 
 /**
  *
@@ -39,40 +33,6 @@ public class User implements Serializable {
     private int followers;
     private int following;
     private boolean isFollowing;
-
-    //have to create new getter and setter for jackson serialize
-    public String getFname() {
-        return fname;
-    }
-
-    public void setFname(String fname) {
-        this.fname = fname;
-    }
-
-    public String getLname() {
-        return lname;
-    }
-
-    public void setLname(String lname) {
-        this.lname = lname;
-    }
-
-    public String getDes() {
-        return des;
-    }
-
-    public void setDes(String des) {
-        this.des = des;
-    }
-
-    public long getCreated() {
-        return created;
-    }
-
-    public void setCreated(long created) {
-        this.created = created;
-    }
-//end add new getter setter above!
 
     public boolean isIsFollowing() {
         return isFollowing;
@@ -148,26 +108,32 @@ public class User implements Serializable {
         this.fname = fname;
     }
 
+    @JsonGetter("lname")
     public String getLastName() {
         return lname;
     }
 
+    @JsonSetter("lname")
     public void setLastName(String lname) {
         this.lname = lname;
     }
 
+    @JsonGetter("des")
     public String getDescription() {
         return des;
     }
 
+    @JsonSetter("des")
     public void setDescription(String des) {
         this.des = des;
     }
 
+    @JsonGetter("profile_photo_id")
     public int getProfilePhotoId() {
         return profile_photo_id;
     }
 
+    @JsonSetter("profile_photo_id")
     public void setProfilePhotoId(int profile_photo_id) {
         this.profile_photo_id = profile_photo_id;
     }
@@ -180,34 +146,42 @@ public class User implements Serializable {
         this.gender = gender;
     }
 
+    @JsonGetter("user_status")
     public int getUserStatus() {
         return user_status;
     }
 
+    @JsonSetter("user_status")
     public void setUserStatus(int user_status) {
         this.user_status = user_status;
     }
 
+    @JsonGetter("user_activated")
     public int getUserActivated() {
         return user_activated;
     }
 
+    @JsonSetter("user_activated")
     public void setUserActivated(int user_activated) {
         this.user_activated = user_activated;
     }
 
+    @JsonGetter("created")
     public long getCreatedTime() {
         return created;
     }
 
+    @JsonSetter("created")
     public void setCreatedTime(long created) {
         this.created = created;
     }
 
+    @JsonGetter("updated")
     public long getUpdatedTime() {
         return updated;
     }
 
+    @JsonSetter("updated")
     public void setUpdatedTime(long updated) {
         this.updated = updated;
     }
