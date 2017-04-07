@@ -424,11 +424,22 @@ public class InteractionData {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        String query = "select f.user_id, f.username, f.email, f.first_name, f.last_name, f.profile_photo_id, \n"
-                + "photos.image_url as 'profile_photo_url', if(f2.user_id is null, 'false', 'true') as 'isFollowing' from\n"
-                + "	(select *  from users where username like '%" + prefix + "%' and user_id <> " + uid + ") as f\n"
-                + "left join follows f2 on f2.follower_id = f.user_id and f2.user_id = " + uid + "\n"
-                + "left join photos on f.profile_photo_id = photos.photo_id";
+
+        String query = "";
+        // @:all search all user!
+        if (prefix.equals("@:all")) {
+            query = "select f.user_id, f.username, f.email, f.first_name, f.last_name, f.profile_photo_id, \n"
+                    + "photos.image_url as 'profile_photo_url', if(f2.user_id is null, 'false', 'true') as 'isFollowing' from\n"
+                    + "	(select *  from users where user_id <> " + uid + ") as f\n"
+                    + "left join follows f2 on f2.follower_id = f.user_id and f2.user_id = " + uid + "\n"
+                    + "left join photos on f.profile_photo_id = photos.photo_id";
+        } else {
+            query = "select f.user_id, f.username, f.email, f.first_name, f.last_name, f.profile_photo_id, \n"
+                    + "photos.image_url as 'profile_photo_url', if(f2.user_id is null, 'false', 'true') as 'isFollowing' from\n"
+                    + "	(select *  from users where username like '%" + prefix + "%' and user_id <> " + uid + ") as f\n"
+                    + "left join follows f2 on f2.follower_id = f.user_id and f2.user_id = " + uid + "\n"
+                    + "left join photos on f.profile_photo_id = photos.photo_id";
+        }
         try {
             st = dbConn.createStatement();
             rs = st.executeQuery(query);

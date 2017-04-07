@@ -52,6 +52,15 @@
         <url-pattern>/photos</url-pattern>   
     </servlet-mapping>
         
+    <servlet>
+        <servlet-name>SmileServlet</servlet-name>
+        <jsp-file>/smile.jsp</jsp-file>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SmileServlet</servlet-name>
+        <url-pattern>/smile</url-pattern>   
+    </servlet-mapping>
+        
     <session-config>
         <session-timeout>
             30
