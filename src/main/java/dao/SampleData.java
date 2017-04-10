@@ -51,7 +51,7 @@ public class SampleData {
 //        System.out.println( UserData.updateAvatar(2, 6));
         Pattern p = Pattern.compile("^[a-zA-Z0-9_.]+$");
         Matcher m = p.matcher("coinCard");
-        if(m.matches()){
+        if (m.matches()) {
             System.out.println("RegisterActivity" + "Match!");
         } else {
             System.out.println("cặc");
@@ -77,12 +77,12 @@ public class SampleData {
     public static void initPhoto() throws SQLException {
         long time = System.currentTimeMillis();
         java.sql.Timestamp timestmp = new java.sql.Timestamp(time);
-        insertPhoto(1, "I'm sorry...", 0, 0, 57344, "http://instagram.fhan1-1.fna.fbcdn.net/t51.2885-15/e35/14677346_369695710088347_4233693574568345600_n.jpg", null, 1, 0, timestmp, timestmp);
-        insertPhoto(1, "First go to market with my love", 0, 0, 53248, "https://scontent.fhan1-1.fna.fbcdn.net/v/t1.0-9/15541441_1095055387271603_7045384722623337265_n.jpg?oh=918894b1eae1307f581a5a7a7585c84d&oe=5934349E", null, 1, 0, timestmp, timestmp);
-        insertPhoto(3, "I'm alone.. <3 <3", 0, 0, 90112, "http://scontent.fhan1-1.fna.fbcdn.net/v/t1.0-9/16683943_594452610750584_1621580591524776236_n.jpg?oh=46e696d008a2b4b15107a9e6b5147a30&oe=5900EC63", null, 1, 0, timestmp, timestmp);
-        insertPhoto(1, "My love...", 0, 0, 131072, "https://scontent.fhan1-1.fna.fbcdn.net/v/t1.0-9/15740931_1108288455948296_6211145670586087474_n.jpg?oh=fb54dbe3eaeaf80b9199641c0df11fa7&oe=58FD5347", null, 1, 0, timestmp, timestmp);
-        insertPhoto(4, "I'm preparing to sing, so all of you shut the fuck up..", 0, 0, 110592, "https://scontent.fhan1-1.fna.fbcdn.net/v/t31.0-8/p960x960/16700523_1169663416465459_8574099998480428994_o.jpg?oh=55d2d359a45361e4f0f91118d050924d&oe=593C1672", null, 1, 0, timestmp, timestmp);
-        insertPhoto(2, "I'm tired", 0, 0, 8192, "https://scontent.fhan1-1.fna.fbcdn.net/v/t1.0-9/12548911_1509163119390498_907125540162225688_n.jpg?oh=9131afb132a3b225f9e9f48a1d140984&oe=5905FE05", null, 1, 0, timestmp, timestmp);
+        insertPhoto(1, "I'm sorry...", 0, 0, 57344, "http://instagram.fhan1-1.fna.fbcdn.net/t51.2885-15/e35/14677346_369695710088347_4233693574568345600_n.jpg", null, 1, 0, timestmp, timestmp, 0);
+        insertPhoto(1, "First go to market with my love", 0, 0, 53248, "https://scontent.fhan1-1.fna.fbcdn.net/v/t1.0-9/15541441_1095055387271603_7045384722623337265_n.jpg?oh=918894b1eae1307f581a5a7a7585c84d&oe=5934349E", null, 1, 0, timestmp, timestmp, 0);
+        insertPhoto(3, "I'm alone.. <3 <3", 0, 0, 90112, "http://scontent.fhan1-1.fna.fbcdn.net/v/t1.0-9/16683943_594452610750584_1621580591524776236_n.jpg?oh=46e696d008a2b4b15107a9e6b5147a30&oe=5900EC63", null, 1, 0, timestmp, timestmp, 0);
+        insertPhoto(1, "My love...", 0, 0, 131072, "https://scontent.fhan1-1.fna.fbcdn.net/v/t1.0-9/15740931_1108288455948296_6211145670586087474_n.jpg?oh=fb54dbe3eaeaf80b9199641c0df11fa7&oe=58FD5347", null, 1, 0, timestmp, timestmp, 0);
+        insertPhoto(4, "I'm preparing to sing, so all of you shut the fuck up..", 0, 0, 110592, "https://scontent.fhan1-1.fna.fbcdn.net/v/t31.0-8/p960x960/16700523_1169663416465459_8574099998480428994_o.jpg?oh=55d2d359a45361e4f0f91118d050924d&oe=593C1672", null, 1, 0, timestmp, timestmp, 0);
+        insertPhoto(2, "I'm tired", 0, 0, 8192, "https://scontent.fhan1-1.fna.fbcdn.net/v/t1.0-9/12548911_1509163119390498_907125540162225688_n.jpg?oh=9131afb132a3b225f9e9f48a1d140984&oe=5905FE05", null, 1, 0, timestmp, timestmp, 0);
     }
 
     public static void initFollow() throws SQLException {

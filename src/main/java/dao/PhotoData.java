@@ -24,7 +24,7 @@ import java.util.logging.Logger;
 public class PhotoData {
 
     public static boolean insertPhoto(int uid, String caption, float lat, float longt,
-            long size, String url, String down_url, int status, int isAvatar, Timestamp created, Timestamp updated) {
+            long size, String url, String down_url, int status, int isAvatar, Timestamp created, Timestamp updated, float ratio) {
         boolean insertStatus = false;
         Connection dbConn = null;
         try {
@@ -35,7 +35,7 @@ public class PhotoData {
             }
 
             String query = "insert into photos(user_id, caption, latitude, longtitude, image_size, image_url,"
-                    + "downsized_image_url, image_status, is_avatar, date_created, date_updated) values (?,?,?,?,?,?,?,?,?,?,?)";
+                    + "downsized_image_url, image_status, is_avatar, date_created, date_updated, image_size_ratio) values (?,?,?,?,?,?,?,?,?,?,?,?)";
 
             PreparedStatement preparedStatement = dbConn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 
@@ -50,6 +50,7 @@ public class PhotoData {
             preparedStatement.setInt(9, isAvatar);
             preparedStatement.setTimestamp(10, created);
             preparedStatement.setTimestamp(11, updated);
+            preparedStatement.setFloat(12, ratio);
 
             int records = preparedStatement.executeUpdate();
             if (records > 0) {
@@ -482,5 +483,44 @@ public class PhotoData {
         }
 
         return user_id;
+    }
+
+    public static boolean updatePhotoSizeRatio(int pid, float ratio) {
+        boolean insertStatus = false;
+        Connection dbConn = null;
+        try {
+            try {
+                dbConn = DBConnection.createConnection();
+            } catch (Exception ex) {
+                Logger.getLogger(PhotoData.class.getName()).log(Level.SEVERE, null, ex);
+            }
+
+            String query = "update photos set image_size_ratio = ?"
+                    + " where photo_id = ?";
+
+            PreparedStatement preparedStatement = dbConn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+
+            preparedStatement.setFloat(1, ratio);
+            preparedStatement.setInt(2, pid);
+
+            int records = preparedStatement.executeUpdate();
+            if (records > 0) {
+                insertStatus = true;
+            }
+            if (preparedStatement != null) {
+                preparedStatement.close();
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                if (dbConn != null) {
+                    dbConn.close();
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+        return insertStatus;
     }
 }

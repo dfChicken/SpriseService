@@ -106,10 +106,10 @@ public class PhotoSvc {
     @Produces(MediaType.APPLICATION_JSON)
     public Response uploadNewPhotoFeed(@QueryParam("uid") int uid, @QueryParam("caption") String caption, @QueryParam("lat") float lat, @QueryParam("longt") float longt,
             @QueryParam("size") long size, @QueryParam("url") String url, @QueryParam("down_url") String down_url, @QueryParam("status") int status,
-            @QueryParam("isAvatar") int isAvatar, @QueryParam("created") long created) {
-        
+            @QueryParam("isAvatar") int isAvatar, @QueryParam("created") long created, @QueryParam("ratio") float ratio) {
+
         boolean result = false;
-        
+
         Timestamp create_time = new Timestamp(created);
         if ("null".equals(down_url)) {
             down_url = null;
@@ -117,11 +117,25 @@ public class PhotoSvc {
 
         String decodedCaption = Utils.decodeUTF8(caption);
 
-        result = PhotoData.insertPhoto(uid, decodedCaption, lat, longt, size, url, down_url, status, isAvatar, create_time, create_time);
+        result = PhotoData.insertPhoto(uid, decodedCaption, lat, longt, size, url, down_url, status, isAvatar, create_time, create_time, ratio);
         if (result) {
             return Response.status(Response.Status.CREATED).build();
         } else {
             return Response.status(Response.Status.CONFLICT).build();
         }
     }
+
+    @PUT
+    @Path("/photo/updimgratio")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updatePhotoSizeRatio(@QueryParam("pid") int pid, @QueryParam("ratio") float ratio) {
+        boolean result = false;
+        result = PhotoData.updatePhotoSizeRatio(pid, ratio);
+        if (result) {
+            return Response.status(Response.Status.OK).build();
+        } else {
+            return Response.status(Response.Status.GONE).build();
+        }
+    }
+
 }
