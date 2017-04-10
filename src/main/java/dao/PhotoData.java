@@ -165,6 +165,7 @@ public class PhotoData {
                 p.setCreatedTime(rs.getTimestamp("date_created").getTime());
                 p.setUpdatedTime(rs.getTimestamp("date_updated").getTime());
                 p.setLikes(rs.getInt("likes"));
+                p.setRatio(rs.getFloat("image_size_ratio"));
 //                System.out.println(p.getCreatedTime().getTime());
                 p.setIsLiked(checkLikedPhoto(rs.getInt("user_id"), rs.getInt("photo_id")));
             }
@@ -306,6 +307,7 @@ public class PhotoData {
                 p.setLikes(rs.getInt("likes"));
                 p.setComments(rs.getInt("comments"));
                 p.setIsLiked(rs.getBoolean("isLiked"));
+                p.setRatio(rs.getFloat("image_size_ratio"));
                 timelinePhotos.add(p);
             }
         } catch (SQLException ex) {
@@ -364,6 +366,7 @@ public class PhotoData {
                 p.setUpdatedTime(rs.getTimestamp("date_updated").getTime());
                 p.setLikes(rs.getInt("likes"));
                 p.setIsLiked(rs.getBoolean("isLiked"));
+                p.setRatio(rs.getFloat("image_size_ratio"));
                 timelinePhotos.add(p);
             }
         } catch (SQLException ex) {
@@ -422,6 +425,7 @@ public class PhotoData {
                 p.setUpdatedTime(rs.getTimestamp("date_updated").getTime());
                 p.setLikes(rs.getInt("likes"));
                 p.setIsLiked(rs.getBoolean("isLiked"));
+                p.setRatio(rs.getFloat("image_size_ratio"));
                 allPhotos.add(p);
             }
         } catch (SQLException ex) {

@@ -22,7 +22,9 @@ public class Photo {
     private float lat;
     private float longt;
     private long size;
+    private float ratio;
     private String url;
+
     private String downsized_url;
     private int status;
     private long created;
@@ -78,6 +80,14 @@ public class Photo {
 
     public void setSize(long size) {
         this.size = size;
+    }
+
+    public float getRatio() {
+        return ratio;
+    }
+
+    public void setRatio(float ratio) {
+        this.ratio = ratio;
     }
 
     public String getUrl() {
