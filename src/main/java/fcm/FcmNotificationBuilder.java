@@ -13,13 +13,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
@@ -35,7 +29,7 @@ import org.json.JSONObject;
  */
 public class FcmNotificationBuilder {
 
-    public static final MediaType MEDIA_TYPE_JSON = MediaType.parse("application/json; charset=utf-8");
+//    public static final MediaType MEDIA_TYPE_JSON = MediaType.parse("application/json; charset=utf-8");
     private static final String SERVER_API_KEY = "AAAABsoWDi0:APA91bGxAjorEWW66RIHeiUwMK-5cxqVtmp6sZEj5zUaPJhT9fRD9Sl39TwEliUokAC2wjnnvFNcRjM378ZxpVqDGyoKCE-qoHzScPy7AXBz8g2pnIYOTCaFSRqzwe_Woil9oojjNl07";
     private static final String CONTENT_TYPE = "Content-Type";
     private static final String APPLICATION_JSON = "application/json";
@@ -63,41 +57,41 @@ public class FcmNotificationBuilder {
     private String token;
 
     //không đề nghị sử dụng, phương thức này khiến máy chủ gửi quá nhiều response
-    public void pushNotification(final int receiver_id, final JSONObject jSONObjectBody) {
-        RequestBody requestBody = null;
-        try {
-            requestBody = RequestBody.create(MEDIA_TYPE_JSON, jSONObjectBody.toString());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        Request request = new Request.Builder()
-                .addHeader(CONTENT_TYPE, APPLICATION_JSON)
-                .addHeader(AUTHORIZATION, AUTH_KEY)
-                .url(FCM_URL)
-                .post(requestBody)
-                .build();
-
-        Call call = new OkHttpClient().newCall(request);
-        call.enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-//                System.out.println("onGetAllUsersFailure: " + e.getMessage());
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                String json = response.body().string();
-                JSONObject jsonObject = new JSONObject(json);
-                if (jsonObject.getInt("failure") == 1) {
-                    String failedToken = jSONObjectBody.getString(KEY_TO);
-                    //tự động xóa failed id
-                    System.out.println("Send push message failed for regId: " + jSONObjectBody.getString(KEY_TO));
-                    MessageData.deleteUserFirebaseToken(receiver_id, failedToken);
-                }
-
-            }
-        });
-    }
+//    public void pushNotification(final int receiver_id, final JSONObject jSONObjectBody) {
+//        RequestBody requestBody = null;
+//        try {
+//            requestBody = RequestBody.create(MEDIA_TYPE_JSON, jSONObjectBody.toString());
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
+//        Request request = new Request.Builder()
+//                .addHeader(CONTENT_TYPE, APPLICATION_JSON)
+//                .addHeader(AUTHORIZATION, AUTH_KEY)
+//                .url(FCM_URL)
+//                .post(requestBody)
+//                .build();
+//
+//        Call call = new OkHttpClient().newCall(request);
+//        call.enqueue(new Callback() {
+//            @Override
+//            public void onFailure(Call call, IOException e) {
+////                System.out.println("onGetAllUsersFailure: " + e.getMessage());
+//            }
+//
+//            @Override
+//            public void onResponse(Call call, Response response) throws IOException {
+//                String json = response.body().string();
+//                JSONObject jsonObject = new JSONObject(json);
+//                if (jsonObject.getInt("failure") == 1) {
+//                    String failedToken = jSONObjectBody.getString(KEY_TO);
+//                    //tự động xóa failed id
+//                    System.out.println("Send push message failed for regId: " + jSONObjectBody.getString(KEY_TO));
+//                    MessageData.deleteUserFirebaseToken(receiver_id, failedToken);
+//                }
+//
+//            }
+//        });
+//    }
 
     public void pushMsgNoti(final int receiver_id, final JSONObject jSONObjectBody) {
         try {
