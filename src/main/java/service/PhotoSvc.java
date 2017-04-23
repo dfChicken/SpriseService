@@ -52,9 +52,9 @@ public class PhotoSvc {
     @Path("/user")
     @Produces(MediaType.APPLICATION_JSON + ";charset=utf-8")
     @Consumes(MediaType.APPLICATION_JSON + ";charset=utf-8")
-    public String getUserPhotos(@QueryParam("uid") int uid) {
+    public String getUserPhotos(@QueryParam("uid") int uid, @QueryParam("guid") int guid) {
         String response = "";
-        ArrayList<Photo> photos = PhotoData.getUserPhotos(uid);
+        ArrayList<Photo> photos = PhotoData.getUserPhotos(uid, guid);
         if (!photos.isEmpty()) {
             response = new Gson().toJson(photos);
         }

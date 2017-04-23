@@ -330,7 +330,7 @@ public class PhotoData {
         return timelinePhotos;
     }
 
-    public static ArrayList<Photo> getUserPhotos(int uid) {
+    public static ArrayList<Photo> getUserPhotos(int uid, int guid) {
         ArrayList<Photo> timelinePhotos = new ArrayList<>();
         Connection dbConn = null;
 
@@ -345,9 +345,9 @@ public class PhotoData {
         String query = "select FetchLikes.*, count(likes.user_id) as 'likes' from \n"
                 + "(select p.* , if(likes.photo_id is null, 'false','true') as 'isLiked'\n"
                 + "from (select photos.* from photos where photos.user_id = " + uid + ") as p\n"
-                + "left join likes on likes.photo_id = p.photo_id and likes.user_id = " + uid + ") as FetchLikes\n"
+                + "left join likes on likes.photo_id = p.photo_id and likes.user_id = " + guid + ") as FetchLikes\n"
                 + "left join likes on FetchLikes.photo_id = likes.photo_id\n"
-                + "group by FetchLikes.photo_id";
+                + "group by date_updated desc";
         try {
             st = dbConn.createStatement();
             rs = st.executeQuery(query);
