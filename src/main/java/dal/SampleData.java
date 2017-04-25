@@ -3,14 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package dao;
+package dal;
 
-import static dao.UserData.registerUser;
-import static dao.PhotoData.insertPhoto;
-import static dao.InteractionData.addFollow;
-import static dao.InteractionData.putPhotoLike;
-import static dao.InteractionData.putComment;
-import static dao.PhotoData.getTimelinePhotos;
+import static dal.UserData.registerUser;
+import static dal.PhotoData.insertPhoto;
+import static dal.InteractionData.addFollow;
+import static dal.InteractionData.putPhotoLike;
+import static dal.InteractionData.putComment;
+import static dal.PhotoData.getTimelinePhotos;
 import entity.Photo;
 import fcm.FcmNotificationBuilder;
 import java.io.IOException;

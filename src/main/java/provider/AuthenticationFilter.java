@@ -5,7 +5,7 @@
  */
 package provider;
 
-import dao.UserData;
+import dal.UserData;
 import java.io.IOException;
 import java.lang.reflect.Method;
 import java.nio.charset.Charset;

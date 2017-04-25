@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package dao;
+package dal;
 
-import static dao.PhotoData.checkLikedPhoto;
+import static dal.PhotoData.checkLikedPhoto;
 import entity.Photo;
 import entity.User;
 import java.sql.Connection;

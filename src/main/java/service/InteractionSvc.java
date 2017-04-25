@@ -7,10 +7,10 @@ package service;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import dao.InteractionData;
-import dao.MessageData;
-import dao.PhotoData;
-import dao.UserData;
+import dal.InteractionData;
+import dal.MessageData;
+import dal.PhotoData;
+import dal.UserData;
 import entity.Comment;
 import entity.Photo;
 import entity.User;

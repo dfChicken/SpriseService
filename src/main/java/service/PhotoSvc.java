@@ -7,8 +7,8 @@ package service;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import dao.InteractionData;
-import dao.PhotoData;
+import dal.InteractionData;
+import dal.PhotoData;
 import entity.Photo;
 import java.sql.Timestamp;
 import java.util.ArrayList;

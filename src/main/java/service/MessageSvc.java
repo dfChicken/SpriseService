@@ -7,8 +7,8 @@ package service;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import dao.InteractionData;
-import dao.MessageData;
+import dal.InteractionData;
+import dal.MessageData;
 import entity.Message;
 import entity.Notification;
 import entity.Token;

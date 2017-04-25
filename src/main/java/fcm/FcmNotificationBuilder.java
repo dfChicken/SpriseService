@@ -5,8 +5,8 @@
  */
 package fcm;
 
-import dao.MessageData;
-import dao.UserData;
+import dal.MessageData;
+import dal.UserData;
 import entity.User;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;

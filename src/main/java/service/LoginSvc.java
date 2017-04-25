@@ -5,8 +5,8 @@
  */
 package service;
 
-import dao.DBConnection;
-import dao.UserData;
+import dal.DBConnection;
+import dal.UserData;
 import javax.annotation.security.PermitAll;
 import util.Utils;
 import javax.ws.rs.GET;

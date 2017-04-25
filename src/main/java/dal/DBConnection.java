@@ -3,13 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package dao;
+package dal;
 
 /**
  *
  * @author dfChicken
  */
-import static dao.UserData.registerUser;
+import static dal.UserData.registerUser;
 import util.Constants;
 import java.sql.Connection;
 import java.sql.DriverManager;

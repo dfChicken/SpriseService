@@ -5,9 +5,9 @@
  */
 package service;
 
-import dao.DBConnection;
-import dao.UserData;
-import static dao.UserData.registerUser;
+import dal.DBConnection;
+import dal.UserData;
+import static dal.UserData.registerUser;
 import entity.User;
 import util.Utils;
 import java.sql.SQLException;
